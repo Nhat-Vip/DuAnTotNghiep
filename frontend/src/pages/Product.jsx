@@ -1,0 +1,170 @@
+import React ,{useEffect,useState,useRef} from "react";
+// import { data } from "react-router-dom";
+// import "../index.css"
+
+export default function Product(){
+    const [product,setProduct] = useState([]);
+    const [selectedFile, setSelectedFile] = useState(null);
+    const [selectedProduct, setSelectedProduct] = useState({
+        id:"",
+        name: "",
+        price: "",
+        quantity: "",
+        type: "",
+        status: "",
+        detail: "",
+        image:""
+    });
+
+    const formRef = useRef(null);
+
+    const loadProduct = () => {
+        fetch("http://coffee.local/api/product.php?action=all")
+            .then((response) => response.json())
+            .then((data) => {
+                setProduct(data);
+            })
+            .catch((error) => console.log(error));
+        };
+
+    useEffect(()=>{
+        loadProduct();
+    },[])
+
+    const handleRowClick = (sp) => {
+        setSelectedProduct({
+            id: sp.productID,
+            name: sp.productName,
+            price: Number(sp.price).toLocaleString("vi-VN",{style:"currency",currency:"VND"}),
+            type: sp.productType,
+            status: sp.productStatus == 1 ? "Còn" : "Hết",
+            detail: sp.detail,
+            image: sp.image_path
+        });
+    };
+    const handleFileChange = (event) => {
+        const file = event.target.files[0]; // Lấy file đầu tiên
+        if (file) {
+            setSelectedFile(file);
+        }
+    };
+    const handleFormClick = async(type,event) =>{
+        event.preventDefault();
+            if (!selectedProduct.id) {
+                alert("Chưa chọn sản phẩm để cập nhật!");
+                return;
+            }
+
+        // if (!formRef.current) return;
+
+        const formData = new FormData();
+        formData.append("productName", selectedProduct.name);
+        formData.append("price", Number(selectedProduct.price.replace(/[^\d]/g,"")));
+        formData.append("type", selectedProduct.type);
+        formData.append("status", selectedProduct.status === "Còn" ? "1" : "0");
+        formData.append("detail", selectedProduct.detail);
+        if (selectedFile) {
+            formData.append("image", selectedFile);
+        }
+
+        try{
+            const response =  await fetch(`http://coffee.local/api/product.php?action=${type}&id=${selectedProduct.id}`,{
+                method:"POST",
+                body: formData
+            });
+            console.log(formData);
+            const text = await response.text(); // Đọc phản hồi dưới dạng text để debug
+            console.log("Raw Response:", text);
+            
+            try{
+                const result = JSON.parse(text); // Chuyển đổi text thành JSON
+                console.log("Kết quả từ server:", result);
+
+
+                if (result.status === "success") {
+                    alert(result.message);
+                    formRef.current.reset(); // Reset form sau khi gửi thành công
+                    setSelectedFile(null); // Xóa ảnh đã chọn
+                    loadProduct();
+                } else {
+                    alert("Có lỗi xảy ra! " + result.message);
+                }
+            }
+            catch(err){
+                console.error("abbbbbb",err);
+            }
+        }
+        catch (error) {
+            console.error("Lỗi khi gửi form:",error);
+            alert("Gửi form thất bại!");
+        }   
+    }
+
+
+    return(
+        <div className="form-product-container">
+            <div className="form-product">
+                <h2>Thêm sản phẩm</h2>
+                <form method="post" ref={formRef} action={`http://coffee.local/api/product.php?action=insert&id=${selectedProduct.id}`} encType="multipart/form-data">
+                    <input name="productName" value={selectedProduct.name} style={{"--i":"65%"}} type="text" placeholder="Tên sản phẩm" 
+                    onChange={(e) => setSelectedProduct({...selectedProduct, name: e.target.value})} />
+
+                    <input name="price" value={selectedProduct.price} style={{"--i":"30%"}} type="text" placeholder="Giá bán" 
+                    onChange={(e) => setSelectedProduct({...selectedProduct, price: e.target.value})} />
+
+                    {/* <input value={selectedProduct.quantity} style={{"--i":"30%"}} type="text" placeholder="Số lượng"/> */}
+                    <select value={selectedProduct.type} name="type" id="type" style={{"--i":"50%"}} 
+                    onChange={(e) => setSelectedProduct({...selectedProduct, type: e.target.value})} >
+                        <option value="Coffee">Coffee</option>
+                        <option value="Tea">Tea</option>
+                        <option value="Trà sữa">Trà sữa</option>
+                        <option value="Trà trái cây">Trà trái cây</option>
+                        <option value="Trái cây xay">Trái cây xay</option>
+                        <option value="Bánh ngọt">Bánh ngọt</option>
+                    </select>
+                    <select value={selectedProduct.status} name="status" id="status" style={{"--i":"45%"}} 
+                    onChange={(e) => setSelectedProduct({...selectedProduct, status: e.target.value})} >
+                        <option value="Còn">Còn</option>
+                        <option value="Hết">Hết</option>
+                    </select>
+                    <input name="detail" value={selectedProduct.detail} type="text" placeholder="Chi tiết sản phẩm" style={{"--i":"100%"}} 
+                    onChange={(e) => setSelectedProduct({...selectedProduct, detail: e.target.value})} />
+                    <input type="file" name="image" id="image" accept="image/*" style={{"--i":"100%"}} required onChange={handleFileChange}/>
+                    <input type="submit" onClick={(event)=>{handleFormClick("insert",event)}} value="Thêm sản phẩm" style={{"--i":"45%"}}/>
+                    <input type="button" value="Sửa" style={{"--i":"45%"}} onClick={(event)=>{handleFormClick("update",event)}}/>
+                </form>
+            </div>
+            <div className="List-product_manager">
+                <h2>Danh sách sản phẩm</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th style={{"--i":"20%"}}>Ảnh</th>
+                            <th style={{"--i":"15%"}}>Tên sản phẩm</th>
+                            <th style={{"--i":"10%"}}>Giá</th>
+                            <th style={{"--i":"10%"}}>Trạng thái</th>
+                            <th style={{"--i":"20%"}}>Chi tiết</th>
+                            <th style={{"--i":"15%"}}>Loại</th>
+                            <th style={{"--i":"10%"}}>Xóa</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                            product.map((sp)=>(
+                                <tr className="item" key={sp.productID} onClick={() => handleRowClick(sp)}>
+                                    <td><img src={sp.image_path} alt="product"/></td>
+                                    <td>{sp.productName}</td>
+                                    <td>{Number(sp.price).toLocaleString("vi-VN",{style:"currency",currency:"VND"})}</td>
+                                    <td>{sp.productStatus == 1 ? "Còn" : "Hết"}</td>
+                                    <td>{sp.detail}</td>
+                                    <td>{sp.productType}</td>
+                                    <td><button onClick={(event)=>{handleFormClick("delete",event)}}>Xóa</button></td>
+                                </tr>
+                            ))
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    );
+}

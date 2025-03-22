@@ -1,0 +1,110 @@
+.container {
+    font-family: Arial, sans-serif;
+    height: 100vh;
+    position: relative;
+    width: 100%;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.image-section {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.product-image {
+    max-width: 100%;
+    border-radius: 10px;
+}
+
+.info-section {
+    flex: 1;
+    padding: 20px;
+}
+
+global h1 {
+    font-size: 24px;
+}
+
+.price {
+    font-size: 24px;
+    color: #e67e22;
+    font-weight: bold;
+}
+
+.option,
+.topping {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+button {
+    padding: 10px 15px;
+    border: 1px solid #ccc;
+    background-color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+button:hover,
+button.selected {
+    background-color: #e67e22;
+    color: white;
+    border-color: #e67e22;
+}
+
+.total {
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 15px;
+}
+
+.order-btn {
+    background-color: #f39c12;
+    color: white;
+    border: none;
+    padding: 15px;
+    width: 100%;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.order-btn:hover {
+    background-color: #e67e22;
+}
+
+.path-item{
+    display: flex;
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+.path-item :global(li),
+.path-item :global(a){
+    color: black;
+    cursor: pointer;
+    padding: 0 5px;
+    transition: color 0.3s;
+}
+.path-item :global(li):hover,
+.path-item :global(a):hover{
+    color: #e67e22;
+}
+
+.path-item :global(li):last-child{
+    cursor: default;
+    color: rgba(0, 0, 0, 0.323);
+}
