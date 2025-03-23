@@ -64,6 +64,7 @@ function Home() {
     <>
       <div className={styles.ImageSlider}>
         <div ref={listRef} className={styles.ListImage}>
+          
           <div ref={(el) => itemsRef.current[0] = el} className={styles.item}>
             <img src="/Images/1.webp" alt=""/>
           </div>

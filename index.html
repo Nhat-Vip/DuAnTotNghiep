@@ -439,27 +439,27 @@ button:hover, button.selected {
     let sizePrice = 0;
     
     function setSize(price, element) {
-    sizePrice = price;
-    updateTotal();
-    
-    document.querySelectorAll(".size-btn").forEach(btn => btn.classList.remove("selected"));
-    element.classList.add("selected");
+        sizePrice = price;
+        updateTotal();
+        
+        document.querySelectorAll(".size-btn").forEach(btn => btn.classList.remove("selected"));
+        element.classList.add("selected");
     }
     
     function updateTotal() {
-    let toppings = document.querySelectorAll('.topping button.selected');
-    let toppingPrice = Array.from(toppings).reduce((sum, item) => sum + Number(item.getAttribute("data-price")), 0);
-    let total = basePrice + sizePrice + toppingPrice;
-    document.querySelector('.total').innerText = `Tổng: ${total.toLocaleString()} đ`;
+        let toppings = document.querySelectorAll('.topping button.selected');
+        let toppingPrice = Array.from(toppings).reduce((sum, item) => sum + Number(item.getAttribute("data-price")), 0);
+        let total = basePrice + sizePrice + toppingPrice;
+        document.querySelector('.total').innerText = `Tổng: ${total.toLocaleString()} đ`;
     }
     
     document.addEventListener("DOMContentLoaded", function() {
-    document.querySelectorAll(".topping button").forEach(button => {
-    button.addEventListener("click", function() {
-    this.classList.toggle("selected");
-    updateTotal();
-    });
-    });
+        document.querySelectorAll(".topping button").forEach(button => {
+            button.addEventListener("click", function() {
+                this.classList.toggle("selected");
+                updateTotal();
+            });
+        });
     });
     </script>
 

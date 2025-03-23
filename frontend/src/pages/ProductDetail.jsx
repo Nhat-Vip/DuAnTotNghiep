@@ -1,14 +1,60 @@
-import React from "react";
+import React ,{useState,useEffect} from "react";
 import {useLocation, useNavigate} from "react-router-dom";
 import styles from "../productDetail.module.css";
 
 export default function ProductDetail(){
     const {state:product} = useLocation();
     const navigate = useNavigate();
+    // const [size,setSize] = useState(0);
+    const [extraPrice,setExtraPrice] = useState(0);
+    const sizePrices= [0,6000,10000];
 
     const sp = product.sp;
-    // const navigate = useNavigate();
 
+    let basePrice = Number(sp.price);
+    
+    // useEffect(()=>{
+        
+    // },[size])
+
+    const selectedSizeClick = (event) =>{
+        
+        setExtraPrice(sizePrices[Number(event.currentTarget.getAttribute("data-size"))]);
+        updateTotal();
+        
+        document.querySelector(`.${styles.selected}`).classList.remove(styles.selected);
+        event.currentTarget.classList.add(styles.selected);
+    }
+
+    useEffect(() => {
+        updateTotal();
+    }, [extraPrice]);// eslint-disable-line react-hooks/exhaustive-deps
+    // function setSize(price, element) {
+    //     extraPrice = sizePrices[size];
+    //     updateTotal();
+        
+    //     document.querySelectorAll(".size-btn").forEach(btn => btn.classList.remove("selected"));
+    //     element.classList.add("selected");
+    // }
+    
+    function updateTotal() {
+        let toppings = document.querySelectorAll(`.${styles.topping} button.${styles.selected}`);
+        let toppingPrice = Array.from(toppings).reduce((sum, item) => sum + Number(item.getAttribute("data-price")), 0);
+        let total = basePrice + extraPrice + toppingPrice;
+        document.querySelector(`.${styles.total}`).innerText = `Tổng: ${Number(total).toLocaleString("vi-VN",{style:"currency",currency:"VND"})}`;
+    }
+    const toppingClick = (event)=>{
+        event.target.classList.toggle(`${styles.selected}`);
+        updateTotal();
+        
+    }
+    useEffect(()=>{
+        document.querySelectorAll(`.${styles.topping} button`).forEach(button => {
+            button.addEventListener("click",toppingClick)
+            return () => button.removeEventListener("click",toppingClick)
+        })
+        
+    },[])
 
     return(
         <div className={styles.container}>
@@ -30,9 +76,9 @@ export default function ProductDetail(){
                     </p>
                     <h3 style={{fontSize:"15px", fontWeight :"bold", padding:"5px"}}>Chọn size (bắt buộc)</h3>
                     <div className={styles.option}>
-                        <button className={`${styles["size-btn"]} ${styles["selected"]}`} onclick="setSize(0, this)">Nhỏ + 0 đ</button>
-                        <button className={styles["size-btn"]} onclick="setSize(6000, this)">Vừa + 6.000 đ</button>
-                        <button className={styles["size-btn"]} onclick="setSize(10000, this)">Lớn + 10.000 đ</button>
+                        <button data-size ="0" className={`${styles["size-btn"]} ${styles["selected"]}`} onClick={selectedSizeClick}>Nhỏ + 0 đ</button>
+                        <button data-size ="1" className={styles["size-btn"]} onClick={selectedSizeClick}>Vừa + 6.000 đ</button>
+                        <button data-size ="2" className={styles["size-btn"]} onClick={selectedSizeClick}>Lớn + 10.000 đ</button>
                     </div>
                     <h3 style={{fontSize:"15px", fontWeight :"bold", padding:"5px"}}>Topping</h3>
                     <div className={styles.topping}>

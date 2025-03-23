@@ -23,11 +23,11 @@ export default function Footer(){
                     impedit est possimus voluptates in obcaecati beatae! Eum ipsum deleniti illum cupiditate blanditiis
                     laudantium possimus?</p>
             </div>
-            <div className={`${styles.content} ${styles.bottom}`}>
-                <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Suscipit mollitia molestiae reiciendis,
+        </div>
+        <div className={`${styles.content} ${styles.bottom}`}>
+            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Suscipit mollitia molestiae reiciendis,
                     aut, possimus in dolorum optio, harum placeat aspernatur vel accusantium natus minima officia ipsum
                     modi! Fugit, nam commodi!</p>
-            </div>
         </div>
     </footer>
     );

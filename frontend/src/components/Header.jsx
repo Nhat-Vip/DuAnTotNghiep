@@ -20,7 +20,8 @@ function Header() {
         if(active){
           active.classList?.remove(styles.active);
         }
-        document.querySelectorAll("li")[activeIndex].classList.add(styles.active);
+        const listLi =  document.getElementsByTagName("li");
+        listLi[activeIndex]?.classList.add(styles.active);
         
   },[activeIndex])
   
