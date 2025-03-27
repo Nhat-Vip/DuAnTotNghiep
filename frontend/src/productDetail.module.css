@@ -1,6 +1,6 @@
 .container {
     font-family: Arial, sans-serif;
-    max-height: 100vh;
+    /* height: 100vh; */
     position: relative;
     width: 100vw;
     background: white;
@@ -11,6 +11,8 @@
 
 .content {
     display: flex;
+    width: 100%;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
 }
@@ -23,12 +25,13 @@
 }
 
 .product-image {
-    max-width: 100%;
+    max-width: 90%;
     border-radius: 10px;
 }
 
 .info-section {
     flex: 1;
+    width: 100%;
     padding: 20px;
 }
 
@@ -42,8 +45,11 @@ global h1 {
     font-weight: bold;
 }
 
-.option,
-.topping {
+/* .option{
+    display: flex;
+    justify-content: space-between;
+} */
+.option,.topping {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
@@ -66,9 +72,10 @@ button.selected {
 }
 
 .total {
-    font-size: 2rem;
+    font-size: 15px;
     font-weight: bold;
-    margin-top: 1.5px;
+    /* margin-top: 1.5px; */
+    padding: 10px 2px;
 }
 
 .order-btn {
@@ -107,4 +114,10 @@ button.selected {
 .path-item :global(li):last-child{
     cursor: default;
     color: rgba(0, 0, 0, 0.323);
+}
+
+@media (max-width:767px){
+    .image-section {
+            flex: 1 1 90%;
+        }
 }

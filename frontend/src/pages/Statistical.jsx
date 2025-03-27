@@ -4,11 +4,12 @@ export default function Statistical(){
         const [product,setProduct] = useState([]); 
     
         useEffect(()=>{
-            fetch("http://coffee.local/api/product.php?action=all")
+            fetch("/api/Statistical.php")
             .then((response)=> response.json())
             .then((data)=>{ 
                 if (Array.isArray(data)) {
                 setProduct(data);
+                console.log(data);
                 } else {
                 console.error("API trả về không phải mảng:", data);
                 setProduct([]);
@@ -51,8 +52,8 @@ export default function Statistical(){
                                 <td>{key}</td>
                                 <td>{sp.productName}</td>
                                 <td>{Number(sp.price).toLocaleString("vi-VN", { style: "currency", currency: "VND" })}</td>
-                                <td>10</td>
-                                <td>200.000 đ</td>
+                                <td>{sp.quantity}</td>
+                                <td>{Number(sp.total).toLocaleString("vi-VN",{style:"currency",currency:"VND"})}</td>
                             </tr>
                         ))
                     }

@@ -19,9 +19,10 @@ export default function Product(){
     const formRef = useRef(null);
 
     const loadProduct = () => {
-        fetch("http://coffee.local/api/product.php?action=all")
+        fetch("/api/product.php?action=all")
             .then((response) => response.json())
             .then((data) => {
+                console.log(data);
                 setProduct(data);
             })
             .catch((error) => console.log(error));
@@ -50,10 +51,11 @@ export default function Product(){
     };
     const handleFormClick = async(type,event) =>{
         event.preventDefault();
-            if (!selectedProduct.id) {
+            if (!selectedProduct.id&&type=="update") {
                 alert("Chưa chọn sản phẩm để cập nhật!");
                 return;
             }
+        console.log("abc",selectedProduct);
 
         // if (!formRef.current) return;
 
@@ -68,7 +70,7 @@ export default function Product(){
         }
 
         try{
-            const response =  await fetch(`http://coffee.local/api/product.php?action=${type}&id=${selectedProduct.id}`,{
+            const response =  await fetch(`/api/product.php?action=${type}&id=${selectedProduct.id}`,{
                 method:"POST",
                 body: formData
             });
@@ -91,7 +93,7 @@ export default function Product(){
                 }
             }
             catch(err){
-                console.error("abbbbbb",err);
+                console.error("Lỗi: ",err);
             }
         }
         catch (error) {
@@ -104,25 +106,24 @@ export default function Product(){
     return(
         <div className="form-product-container">
             <div className="form-product">
-                <h2>Thêm sản phẩm</h2>
-                <form method="post" ref={formRef} action={`http://coffee.local/api/product.php?action=insert&id=${selectedProduct.id}`} encType="multipart/form-data">
-                    <input name="productName" value={selectedProduct.name} style={{"--i":"65%"}} type="text" placeholder="Tên sản phẩm" 
+                <h2>Sản phẩm</h2>
+                <form method="post" ref={formRef} action={`/api/product.php?action=insert&id=${selectedProduct.id}`} encType="multipart/form-data">
+                    <input name="productName" value={selectedProduct.name} style={{"--i":"47%"}} type="text" placeholder="Tên sản phẩm" 
                     onChange={(e) => setSelectedProduct({...selectedProduct, name: e.target.value})} />
 
-                    <input name="price" value={selectedProduct.price} style={{"--i":"30%"}} type="text" placeholder="Giá bán" 
+                    <input name="price" value={selectedProduct.price} style={{"--i":"47%"}} type="text" placeholder="Giá bán" 
                     onChange={(e) => setSelectedProduct({...selectedProduct, price: e.target.value})} />
 
                     {/* <input value={selectedProduct.quantity} style={{"--i":"30%"}} type="text" placeholder="Số lượng"/> */}
-                    <select value={selectedProduct.type} name="type" id="type" style={{"--i":"50%"}} 
+                    <select value={selectedProduct.type} name="type" id="type" style={{"--i":"47%"}} 
                     onChange={(e) => setSelectedProduct({...selectedProduct, type: e.target.value})} >
                         <option value="Coffee">Coffee</option>
                         <option value="Tea">Tea</option>
-                        <option value="Trà sữa">Trà sữa</option>
-                        <option value="Trà trái cây">Trà trái cây</option>
-                        <option value="Trái cây xay">Trái cây xay</option>
-                        <option value="Bánh ngọt">Bánh ngọt</option>
+                        <option value="Fruit Tea">Fruit Tea</option>
+                        <option value="Fruit Puree">Fruit Puree</option>
+                        <option value="Cake">Cake</option>
                     </select>
-                    <select value={selectedProduct.status} name="status" id="status" style={{"--i":"45%"}} 
+                    <select value={selectedProduct.status} name="status" id="status" style={{"--i":"47%"}} 
                     onChange={(e) => setSelectedProduct({...selectedProduct, status: e.target.value})} >
                         <option value="Còn">Còn</option>
                         <option value="Hết">Hết</option>
@@ -130,7 +131,7 @@ export default function Product(){
                     <input name="detail" value={selectedProduct.detail} type="text" placeholder="Chi tiết sản phẩm" style={{"--i":"100%"}} 
                     onChange={(e) => setSelectedProduct({...selectedProduct, detail: e.target.value})} />
                     <input type="file" name="image" id="image" accept="image/*" style={{"--i":"100%"}} required onChange={handleFileChange}/>
-                    <input type="submit" onClick={(event)=>{handleFormClick("insert",event)}} value="Thêm sản phẩm" style={{"--i":"45%"}}/>
+                    <input type="submit" onClick={(event)=>{handleFormClick("insert",event)}} value="Thêm" style={{"--i":"45%"}}/>
                     <input type="button" value="Sửa" style={{"--i":"45%"}} onClick={(event)=>{handleFormClick("update",event)}}/>
                 </form>
             </div>

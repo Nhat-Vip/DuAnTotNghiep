@@ -4,18 +4,27 @@ import { useNavigate ,useLocation} from "react-router-dom";
 // import ProductDetail from "./ProductDetail";
 import "../index.css"
 
+
 export default function Menu(){
     const navigate = useNavigate();
     const location = useLocation();
     const menuPath = location.pathname.split("/");
-    const menuItem = menuPath[menuPath.length-1];
+    const menuItem = menuPath[menuPath.length-1].replace("-"," ");
 
     const [product,setProduct] = useState({});
     const [subProduct,setSubProduct] = useState({});
     const [menuSelected,setMenuSelected] = useState(menuItem);
 
     useEffect(()=>{
-        fetch("http://coffee.local/api/product.php?action=allOfType")
+        // const menuPath = location.pathname.split("/");
+        // const menuItem = menuPath[menuPath.length-1].replace("-","");
+        document.querySelector("li.active")?.classList.remove("active");
+        document.getElementById(menuItem).classList.add("active");
+        setMenuSelected(menuItem);
+    },[location]);//eslint-disable-line
+
+    useEffect(()=>{
+        fetch("/api/product.php?action=allOfType")
         .then((response)=> response.json())
         .then((data)=>{ 
             console.log("Product Data:", data);
@@ -25,7 +34,7 @@ export default function Menu(){
         .catch((error)=> console.log(error));
     },[]);
     useEffect(()=>{
-        if(menuSelected =="all"){
+        if(menuSelected == "all"){
             setSubProduct(product);
         }
         else{
@@ -35,8 +44,10 @@ export default function Menu(){
                     sp.productType?.toLowerCase().includes(menuSelected.toLowerCase())
                 )
             });
+            console.log(subProduts);
             setSubProduct(groupByCategory(subProduts));
         }
+        console.log(menuSelected);
     },[menuSelected,product])
 
 
@@ -70,12 +81,12 @@ export default function Menu(){
         <div className="container">
             <aside className="menu-slidebar">
                 <ul className="menu-slidebar-content">
-                    <li data-name = "all" onClick={menuItemClick}>Tất cả</li>
-                    <li data-name = "Coffee" onClick={menuItemClick}>Coffee</li>
-                    <li data-name = "Tea" onClick={menuItemClick}>Trà sữa</li>
-                    <li data-name = "Fruit Tea" onClick={menuItemClick}>Trà trái cây</li>
-                    <li data-name = "Fruit Puree" onClick={menuItemClick}>Trái cây xay</li>
-                    <li data-name = "Cake" onClick={menuItemClick}>Bánh ngọt</li>
+                    <li id="all" data-name = "all" onClick={menuItemClick}>Tất cả</li>
+                    <li id="Coffee" data-name = "Coffee" onClick={menuItemClick}>Coffee</li>
+                    <li id="Tea" data-name = "Tea" onClick={menuItemClick}>Trà sữa</li>
+                    <li id="Fruit Tea" data-name = "Fruit-Tea" onClick={menuItemClick}>Trà trái cây</li>
+                    <li id="Fruit Puree" data-name = "Fruit-Puree" onClick={menuItemClick}>Trái cây xay</li>
+                    <li id="Cake" data-name = "Cake" onClick={menuItemClick}>Bánh ngọt</li>
                 </ul>
             </aside>
             <div className="List-product">
@@ -89,7 +100,7 @@ export default function Menu(){
                                     <div key={sp.productID} className="List-product_item" onClick={()=>{productCLick(sp)}}>
                                         <img src={sp.image_path} className="List-product_item-img" alt=""/>
                                         <p >{sp.productName}</p>
-                                        <p >{Number(sp.price).toLocaleString("vi-VN", { style: "currency", currency: "VND" })}</p>
+                                        <p style={{fontWeight:"normal",paddingTop:"5px",opacity:"0.7"}}>{Number(sp.price).toLocaleString("vi-VN", { style: "currency", currency: "VND" })}</p>
                                     </div>
                                 ))}
                             </div>

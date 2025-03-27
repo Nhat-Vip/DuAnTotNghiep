@@ -54,7 +54,7 @@ export default function ProductDetail(){
             return () => button.removeEventListener("click",toppingClick)
         })
         
-    },[])
+    },[])// eslint-disable-line react-hooks/exhaustive-deps
 
     return(
         <div className={styles.container}>
