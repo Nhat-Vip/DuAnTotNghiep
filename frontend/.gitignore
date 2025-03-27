@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+
+backend/api/coffeeshopmanager-7ec48-firebase-adminsdk-fbsvc-f7ae2e149d.json
+backend/api/*.json
