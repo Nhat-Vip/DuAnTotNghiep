@@ -33,10 +33,10 @@ export default function Statistical(){
 
         useEffect(()=>{
             LoadDate(dateTime);
-        },[statistical]);
+        },[statistical]);//eslint-disable-line
 
 
-        const LoadDate = (date) =>{
+        const LoadDate = () =>{
                 if(dateTime == "day"){
                     const today = new Date().toISOString().split("T")[0];
                     const data  = statistical.filter((sta)=>{
@@ -63,7 +63,7 @@ export default function Statistical(){
 
         useEffect(()=>{
             LoadDate(dateTime);
-        },[dateTime]);
+        },[dateTime]);//eslint-disable-line
 
     return(
         <div className="Statistical">

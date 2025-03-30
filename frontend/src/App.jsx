@@ -5,7 +5,7 @@ import Header from "./components/Header.jsx";
 import Footer from "./components/Footer.jsx";
 import Menu from "./pages/Menu.jsx";
 import Product from "./pages/Product.jsx";
-import Statistical from "./pages/statistical.jsx";
+import Statistical from "./pages/Statistical.jsx";
 import Login from "./pages/Login.jsx";
 import MainLayout from "./MainLayout";
 import ManagerLayout from "./ManagerLayout";
