@@ -1,5 +1,9 @@
 {
-    "require": {
-        "kreait/firebase-php": "^5.26"
-    }
+  "name": "php-api-backend",
+  "require": {
+    "php": "7.4.*",
+    "kreait/firebase-php": "^5.26"
+  }
 }
+
+
