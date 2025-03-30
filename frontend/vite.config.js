@@ -8,7 +8,7 @@ export default defineConfig({
     server: {
     proxy: {
       "/api": {
-        target: "http://coffeeshopmanager.42web.io/backend",
+        target: "http://coffee.local",
         changeOrigin: true,
         secure: false,
       },
