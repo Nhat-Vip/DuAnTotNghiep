@@ -24,7 +24,7 @@ export default function Menu(){
     },[location]);//eslint-disable-line
 
     useEffect(()=>{
-        fetch("/api/product.php?action=allOfType")
+        fetch("/api/product_data.php?action=allOfType")
         .then((response)=> response.json())
         .then((data)=>{ 
             console.log("Product Data:", data);
