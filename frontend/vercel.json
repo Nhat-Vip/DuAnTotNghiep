@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/product",
+      "destination": "http://coffeeshopmanager.42web.io/backend/api/product.php"
+    }
+  ]
+}
