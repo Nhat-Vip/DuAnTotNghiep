@@ -1,4 +1,5 @@
 import React,{useState,useEffect} from "react";
+import { Link ,useNavigate} from "react-router-dom";
 
 // import { useNavigate } from "react-router-dom";
 import { database, ref } from "../components/firebase";
@@ -6,15 +7,19 @@ import { onChildChanged } from "firebase/database";
 
 export default function Order(){
     const [product,setProduct] = useState([]);
+    const navigate = useNavigate();
     const [listProduct,setListProduct] = useState(localStorage.getItem("listProduct") ?  JSON.parse(localStorage.getItem("listProduct")) : []);
     const [totalSelected,setTotalSelected] = useState(0);
     const [orderStatus,setOrderStatus] = useState("");
     const [orderComplete,setOrderComplete] = useState(localStorage.getItem("orderStatus")==="true");
     const [showOrderComplete,setShowOrderComplete] = useState(orderComplete);
-    const [table,setTable] = useState(1);
     const [orderID,setOrderID] = useState(0);
+    const role = localStorage.getItem("role");
     // const navigate = useNavigate();
     const [openMenu,setOpenMenu] = useState(false);
+    const [table,setTable] = useState([]);
+    const [tableSelected,setTableSelected] = useState(0);
+
     // const [order, setOrder] = useState({ name: "", price: "", quantity: 1 });
     const [productsl,setProductSl] = useState({
         id : "",
@@ -23,28 +28,50 @@ export default function Order(){
         price:"",
         quantity: "",
     });
-    // mở giao diện order thành công và ẩn giao diện order
-    // else{
-    //     setListProduct([]);
-    // }
-
-    // useEffect(()=>{
-    //     if(orderComplete){
-    //         const storedProducts = JSON.parse(localStorage.getItem("listProduct")) || [];
-    //         console.log("B",storedProducts);
-    //         setListProduct((prev)=>[...prev,...storedProducts]);
-    //         console.log("ABC",listProduct);
-    //         console.log("ABC",JSON.parse(localStorage.getItem("listProduct")));
-    //     }
-    // },[]);//eslint-disable-line
     useEffect(()=>{
          console.log("useEffect chạy, orderComplete:", orderComplete);
         if(orderComplete == true){
             LoadOrderComplete();
+            // console.log("Role: ",role !="");
+            // if(role == "" || role == null){
+            //     document.getElementById("order-delivery").style.display = "none";
+            // }
         }
         setShowOrderComplete(orderComplete);
     },[orderComplete]);//eslint-disable-line
 
+
+    // Nhận các bàn từ csdl
+
+    // const LoadTable = async () =>{
+    //     const response = await fetch("/api/table.php?action=get")
+        
+    //     const text = await response.text();
+    //     console.log("Raw response: ",text);
+
+    //     const result = JSON.parse(text);
+
+    //     setTable(result);
+    // }
+
+    useEffect(() =>{
+        fetch("/api/table.php?action=get")
+        .then((response)=> response.json())
+        .then((data)=>{
+            setTable(data);
+        })
+        .catch((err)=>console.error("Lỗi: ",err));
+
+        // if(localStorage.getItem("role")==""){
+        //     // document.body.style.overflow = "hidden";
+        //     document.getElementById("order-delivery").style.display = "grid";
+        //     document.getElementById("order-total").style.display = "none";
+        // }
+        // else{
+        //     document.getElementById("order-delivery").style.display = "none";
+        //     document.getElementById("order-total").style.display = "grid";
+        // }
+    },[]);
 
     const LoadOrderComplete = ()=>{
         console.log("Đã gọi");
@@ -103,10 +130,12 @@ export default function Order(){
 
 
     const orderClick = async()=>{
+        console.log("don moi:",orderComplete);
         if(orderComplete){ //kiểm tra nếu là tạo đơn hàng mới
             setOrderComplete(false);
             localStorage.setItem("orderStatus",false);
             setListProduct([]);
+            setTotalSelected(0);
             localStorage.setItem("listProduct","");
             return;
         }
@@ -115,13 +144,16 @@ export default function Order(){
         console.log("ListProduct",listProduct);
         const orderInformation = {
             orderName : "",
-            userID : localStorage.getItem("userID")??null,
+            userID : localStorage.getItem("userID") ?? null,
             tableID :document.getElementById("table").value,
             total : totalSelected,
-            note :  document.getElementById("note").value,
+            sdt: document.getElementById("sdt").value ?? "",
+            note :  document.getElementById("note").value +"\n"+ document.getElementById("address").value,
             orderStatus:"Xác nhận"
 
         }
+        console.log("sdt: ",orderInformation.sdt);
+        console.log("Info: ",orderInformation);
         const response = await fetch("/api/order.php?action=insert",{
             method : "POST",
             headers: { "Content-Type": "application/json" },
@@ -134,13 +166,13 @@ export default function Order(){
         alert(result.message);
         if(result.status == "Success"){
             document.querySelector(".list-product_slected").replaceChildren();
-            alert(result.orderID);
             setOrderID(Number(result.orderID));
             localStorage.setItem("orderID",result.orderID);
             setOrderComplete(true);
             setTotalSelected(0);
             localStorage.setItem("orderStatus",true);
             localStorage.setItem("listProduct",JSON.stringify(listProduct));
+            localStorage.setItem("total",totalSelected);
             console.log(JSON.parse(localStorage.getItem("listProduct")));
             // setListProduct([]);
         }
@@ -347,8 +379,26 @@ export default function Order(){
                 </div>
                 <div style={{display : showOrderComplete ? "flex" : "none"}} className="order-complete">
                 </div>
+                <div style={{display : showOrderComplete ? "none" : role !="" ? "none" : "grid"}} id="order-delivery" className="order-total">
+                    <div className="note">
+                        <label htmlFor="note">
+                            Ghi chú
+                        </label>
+                        <input type="text" name="note" id="note"/>
+                    </div>
+                    <div className="order-total_content">
+                        <h3 id="total">Tổng tiền:</h3>
+                        <button id="order" onClick={()=>
+                            {
+                                document.body.style.overflow = "hidden";
+                                document.querySelector(".order-delivery").style.display = "flex";
 
-                <div style={{display : showOrderComplete ? "none" : "grid"}} id="order-total" className="order-total">
+                            }}>
+                                Order
+                        </button>
+                    </div>
+                </div>
+                <div style={{display : showOrderComplete ? "none" : role !="" ? "grid" : "none"}} id="order-total" className="order-total">
 
                     <div className="note">
                         <label htmlFor="note">
@@ -359,10 +409,12 @@ export default function Order(){
                     <div className="order-total_content">
                         <h3 id="total">Tổng tiền:</h3>
                         <label htmlFor="table">Chọn bàn:</label>
-                        <select name="table" id="table" value={table} onChange={(e)=>{setTable(e.target.value)}}>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
+                        <select name="table" id="table" value={tableSelected} onChange={(e)=>{setTableSelected(e.target.value)}}>
+                            {
+                                table.map((tbl, key) => (
+                                    <option key={key} value={tbl.tableID}>{tbl.tableID}</option>
+                                ))
+                            }
                         </select>
                         <button id="order" onClick={orderClick}>Order</button>
                     </div>
@@ -377,10 +429,10 @@ export default function Order(){
                     </div>
                     <div className="order-total_content">
                         <h3 id="total">Tổng tiền:{Number(totalSelected).toLocaleString("vi-VN",{style:"currency",currency:"VND"})}</h3>
-                        <h3 id="table2">Bàn:{table}</h3>
+                        <h3 id="table2">Bàn:{tableSelected}</h3>
                         <h3 id="status">Trạng thái: <b style={{color:"red"}}>Xác nhận</b></h3>
                         <button id="order" onClick={orderClick}>New Order</button>
-                        <button id="pay" onClick={orderClick}>Thanh toán</button>
+                        <button id="pay" onClick={()=> navigate("/Payment")}>Thanh toán</button>
                     </div>
                 </div>
 
@@ -409,6 +461,25 @@ export default function Order(){
                     }
                 </div>
             </div>
+            <div className="order-delivery" onClick={()=>{
+                document.body.style.overflow = "auto";
+                document.querySelector(".order-delivery").style.display = "none";
+            }}>
+                        <div className="order-delivery_content" onClick={(e)=>e.stopPropagation()}>
+                            <label htmlFor="sdt">
+                                Số điện thoại
+                            </label>
+                            <input type="text" name="sdt" id="sdt"/>
+                            <label htmlFor="address">
+                                Địa chỉ
+                            </label>
+                            <input type="text" name="address" id="address"/>
+                            <button onClick={()=>{orderClick();
+                                document.body.style.overflow = "auto";
+                                document.querySelector(".order-delivery").style.display = "none";
+                            }}>Xác nhận</button>
+                        </div>
+                    </div>
             <button onClick={handleOpenMenu} className="open-menu">{"<"}</button>
         </>
     )

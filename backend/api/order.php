@@ -13,7 +13,6 @@ include_once "../config/database.php";
 require __DIR__ . '/../vendor/autoload.php';
 
 use Kreait\Firebase\Factory;
-use Riverline\MultiPartParser\Converters\Globals;
 
 
 $factory = (new Factory)
@@ -63,29 +62,35 @@ function InsertOrder()
 
     $order = $data["information"];
     $orderName = $order["orderName"];
-    $userID = $order["userID"];
+    $sdt = !empty($order["sdt"]) ? "'". $order["sdt"] ."'" : "'0000000000'";
+    $userID = !empty($order["userID"]) ? "'" . $order["userID"] . "'" : "NULL";
     $tableID = $order["tableID"];
     $total = $order["total"];
-    $note = $order["note"];
+    $note = $order["note"] ?? "";
     $orderStatus = $order["orderStatus"];
     // exit();
     if (empty($orderName)) {
         $orderName = "Khách lẻ";
     }
 
+    if(!preg_match("/^\d{10,11}$/",str_replace("'","",$sdt))){
+        echo json_encode(["status"=>"Error","message"=>"Số điện thoại không hợp lệ"]);
+        exit();
+    }
+
     global $conn;
     $conn->begin_transaction();
-    $sql = "Insert into orders(OrderName,userID,tableID,total,note,orderStatus)
-            Values('$orderName','$userID','$tableID','$total','$note','$orderStatus')";
+    $sql = "Insert into orders(OrderName,sdt,userID,tableID,total,note,orderStatus)
+            Values('$orderName',$sdt,$userID,'$tableID','$total','$note','$orderStatus')";
 
     if ($conn->query($sql) == true) {
         $orderID = $conn->insert_id;
 
         foreach ($data["products"] as $item) {
 
-            $subTotal = $item["quantity"] * $item["price"];
-            $quantity = $item["quantity"];
-            $productID = $item["id"];
+            $quantity = $item["quantity"] ?? 1;
+            $subTotal = (int)$quantity * (int)$item["price"];
+            $productID = $item["productID"]??$item["id"];
 
             $sql = "Insert into orderdetails(subtotal,quantity,productID,OrderID)
                     Values('$subTotal','$quantity','$productID','$orderID')";

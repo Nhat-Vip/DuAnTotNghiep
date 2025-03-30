@@ -27,16 +27,16 @@ function Header() {
   const [lastOrderId, setLastOrderId] = useState(localStorage.getItem("lastOrderId") || null);
 
 
-
   // Kiểm tra đăng nhập
   useEffect(()=>{
     setLoginStatus(localStorage.getItem("status") ?? 0);
     const login = document.querySelectorAll(`.${styles.Login}`);
+    console.log("Login Status: ",loginStatus);
     if(loginStatus==1){
       login[0].style.display = "none";
       login[1].style.display ="block";
     }
-    else{
+    else if(loginStatus == 0){
       login[0].style.display = "block";
       login[1].style.display ="none";
     }
@@ -48,12 +48,15 @@ function Header() {
     const manager = document.getElementById("Manager");
     const notification = document.getElementById("Notification");
     const userRole = localStorage.getItem("role");
-    if(role == null){
+
+    console.log("Role: ",role);
+
+    if(userRole == "" || userRole == null){
       manager.style.display = "none";
       notification.style.display = "none";
       setRole(userRole);
     }
-    else if (role == 0 || role == 1){
+    else if (userRole == 0 || userRole == 1){
       manager.style.display = "block";
       notification.style.display = "flex";
       setRole(userRole);
@@ -65,15 +68,16 @@ function Header() {
         const orderRef = ref(database, "orders");
         const handleNewOrder = (snapshot) =>{
           const orderId = snapshot.key;
-          
-          setLastOrderId(localStorage.getItem("lastOrderId"));
-          if (!lastOrderId || orderId > lastOrderId) {
+          // console.log("cos don hang");
+          // console.log("lastOrderID: ",lastOrderId + "orderID: ",orderId);
+          // setLastOrderId(orderId);
+          if (!lastOrderId || Number(orderId) > Number(lastOrderId)) {
             console.log("Đơn hàng mới");
             console.log(notifications);
             setNotifications((prev) => prev+1);
             localStorage.setItem("lastOrderId", orderId);
+            setLastOrderId(()=>orderId);
             console.log(lastOrderId);
-            setLastOrderId(orderId);
             // ShowNotificationNumber();
           }
         }
@@ -90,7 +94,6 @@ function Header() {
     // if(notifications==0){
     //   return;
     // }
-    console.log(notifications);
 
     document.querySelector(`.${styles.Notification_number}`).innerHTML= notifications;
     console.log("OK");
@@ -164,14 +167,14 @@ function Header() {
                     </div>
               </li>
               <li id="Order" ref={(el) => menuRef.current[3] = el}>
-                <Link to="/Order">Đặt hàng</Link
-                ></li>
+                <Link to="/Order">Đặt hàng</Link>
+              </li>
               {/* <Link ref={(el) => menuRef.current[4] = el} to="TuyenDung.html">Tuyển dụng</Link> */}
             </ol>
         </nav>
         <div className={styles.Notification} id="Notification">
           <span className={styles.Notification_number}>0</span>
-          <FontAwesomeIcon onClick={()=>navigate("/Manager/Order")} className={styles.bellIcon} icon={faBell}></FontAwesomeIcon>
+          <FontAwesomeIcon onClick={()=>{navigate("/Manager/Order");setNotifications(0)}} className={styles.bellIcon} icon={faBell}></FontAwesomeIcon>
         </div>
         <div className={styles.Login}>
           <Link to="/Login">Login</Link>
@@ -182,8 +185,8 @@ function Header() {
                 <ol>
                   <li onClick={()=>{navigate("/User-profile")}}>Profile</li>
                   <li onClick={()=>{setRole(null); setLoginStatus(0); 
-                      localStorage.setItem("role",null); localStorage.setItem("status",0),
-                      localStorage.setItem("userID",null)}}>
+                      localStorage.setItem("role",""); localStorage.setItem("status",0),
+                      localStorage.setItem("userID","");window.location.reload();}}>
                       Log out
                   </li>
                 </ol>

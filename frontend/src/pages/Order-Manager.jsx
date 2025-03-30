@@ -22,7 +22,7 @@ export default function Order_Manager(){
         LoadOrder();
     },[]);
 
-    console.log("Order",order);
+    // console.log("Order",order);
 
     const handleRowClick = (sp) =>{
         const orderDetails = orderDetail.filter((ord)=> ord.OrderID == sp.orderID);
@@ -41,7 +41,8 @@ export default function Order_Manager(){
                             <th style={{"--i":"15%"}}>Tên</th>
                             <th style={{"--i":"10%"}}>Bàn</th>
                             {/* <th style={{"--i":"10%"}}>Trạng thái</th> */}
-                            <th style={{"--i":"30%"}}>Ghi chú</th>
+                            <th style={{"--i":"15%"}}>Ghi chú</th>
+                            <th style={{"--i":"15%"}}>SDT</th>
                             <th style={{"--i":"10%"}}>Giá</th>
                             <th style={{"--i":"15%"}}>Trạng thái</th>
                             {/* <th style={{"--i":"10%"}}>Xóa</th> */}
@@ -55,6 +56,7 @@ export default function Order_Manager(){
                                     <td>{sp.tableID}</td>
                                     {/* <td>{sp.detail}</td> */}
                                     <td>{sp.note}</td>
+                                    <td>{sp.sdt}</td>
                                     <td>{Number(sp.total).toLocaleString("vi-VN",{style:"currency",currency:"VND"})}</td>
                                     <td>{sp.orderStatus}</td>
                                     {/* <td><button onClick={(event)=>{handleFormClick("delete",event)}}>Xóa</button></td> */}
