@@ -19,7 +19,7 @@ export default function Product(){
     const formRef = useRef(null);
 
     const loadProduct = () => {
-        fetch("/api/product.php?action=all")
+        fetch("http://coffeeshopmanager.42web.io/backend/api/product.php?action=all")
             .then((response) => response.json())
             .then((data) => {
                 console.log(data);
