@@ -54,7 +54,8 @@ export default function Order(){
     //     setTable(result);
     // }
 
-    useEffe/api/table.php?action=get")
+    useEffect(() =>{
+        fetch("/api/table.php?action=get")
         .then((response)=> response.json())
         .then((data)=>{
             setTable(data);
@@ -153,7 +154,7 @@ export default function Order(){
         }
         console.log("sdt: ",orderInformation.sdt);
         console.log("Info: ",orderInformation);
-        const respo/api/order.php?action=insert",{
+        const response = await fetch("/api/order.php?action=insert",{
             method : "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ products: listProduct , information: orderInformation}) // Chuyển danh sách sản phẩm thành JSON
@@ -203,7 +204,7 @@ export default function Order(){
 
 
     useEffect(()=>{
-        fetch("/api/product.php?action=allOfType")
+        fetch("http://coffee.local/api/product.php?action=allOfType")
         .then((response)=> response.json())
         .then((data)=>{
             setProduct(data);
