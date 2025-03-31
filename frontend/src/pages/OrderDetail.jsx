@@ -6,6 +6,7 @@ export default function OrderDetail(){
     const {subOrder,orderDetails} = location.state;
     const [product,setProduct] = useState([]);
     const [status,setStatus] = useState(subOrder.orderStatus);
+    const [total,setTotal] = useState(Number(subOrder.total).toLocaleString("vi-VN",{style:"currency",currency:"VND"}));
     const navigate = useNavigate();
     useEffect(()=>{
         fetch("/api/product.php?action=all")
@@ -21,12 +22,26 @@ export default function OrderDetail(){
     
     const handleUpdateClick = async(e) =>{
         e.preventDefault();
-        const id = subOrder.orderID;
 
+        const maxReduced = (subOrder.total * 30) / 100;
+        const amountReduced = subOrder.total - total;
+
+        if(subOrder.total < total){
+            alert("Không thể tăng tiền hóa đơn");
+            return;
+        }
+        else if(amountReduced > maxReduced){
+            alert("Không thể giảm quá 30%");
+            return;
+        }
+        
+
+        const id = subOrder.orderID;
+        const newTotal = total.replace(/[^\d]/g,"");
         const response = await fetch("/api/order.php?action=update",{
             method:"POST",
             headers:{"Content-Type":"application/json"},
-            body:JSON.stringify({id,status})
+            body:JSON.stringify({id,status,total:newTotal})
         });
 
         const text = await response.text();
@@ -48,11 +63,12 @@ export default function OrderDetail(){
         <>
             <div className="form-product-container">
                 <div className="form-product">
-                    <h2>Sản phẩm</h2>
+                    <h2>Chi tiết đơn hàng</h2>
                     <form method="post" encType="multipart/form-data">
                         <input name="productName" value={subOrder.OrderName} style={{"--i":"47%"}} type="text" placeholder="Tên sản phẩm" disabled/>
 
-                        <input name="price" value={subOrder.total} style={{"--i":"47%"}} type="text" placeholder="Tổng" disabled />
+                        <input name="price" value={total} style={{"--i":"47%"}} 
+                        type="text" placeholder="Tổng" onChange={(e)=>setTotal(e.target.value)}/>
 
                         <input value={"Bàn: "+subOrder.tableID} style={{"--i":"30%"}} type="text" placeholder="Số bàn" disabled/>
                         <select value={status} name="status" id="status" style={{"--i":"47%"}} onChange={(e)=>setStatus(e.target.value)}>

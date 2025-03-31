@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from "react";
-import { Link ,useNavigate} from "react-router-dom";
+import { Link ,useNavigate,useLocation} from "react-router-dom";
 
 // import { useNavigate } from "react-router-dom";
 import { database, ref } from "../components/firebase";
@@ -8,12 +8,19 @@ import { onChildChanged } from "firebase/database";
 export default function Order(){
     const [product,setProduct] = useState([]);
     const navigate = useNavigate();
+
+    const location = useLocation();
+    const params = new URLSearchParams(location.search);
+    const data = params.get("qr") ?? "";
+
+
     const [listProduct,setListProduct] = useState(localStorage.getItem("listProduct") ?  JSON.parse(localStorage.getItem("listProduct")) : []);
     const [totalSelected,setTotalSelected] = useState(0);
-    const [orderStatus,setOrderStatus] = useState("");
+    const [orderStatus,setOrderStatus] = useState(localStorage.getItem("Status") || "Xác nhận");
     const [orderComplete,setOrderComplete] = useState(localStorage.getItem("orderStatus")==="true");
     const [showOrderComplete,setShowOrderComplete] = useState(orderComplete);
     const [orderID,setOrderID] = useState(0);
+    const [order,setOrder] = useState([]);
     const role = localStorage.getItem("role");
     // const navigate = useNavigate();
     const [openMenu,setOpenMenu] = useState(false);
@@ -132,6 +139,9 @@ export default function Order(){
     const orderClick = async()=>{
         console.log("don moi:",orderComplete);
         if(orderComplete){ //kiểm tra nếu là tạo đơn hàng mới
+            localStorage.setItem("Status","Xác nhận");
+            setOrderStatus("Xác nhận");
+            document.getElementById("status").innerHTML =`Trạng thái: <b style={{"color: red"}}>Xác nhận</b>`;
             setOrderComplete(false);
             localStorage.setItem("orderStatus",false);
             setListProduct([]);
@@ -173,12 +183,14 @@ export default function Order(){
             localStorage.setItem("orderStatus",true);
             localStorage.setItem("listProduct",JSON.stringify(listProduct));
             localStorage.setItem("total",totalSelected);
+            // findOrder(result.orderID);
             console.log(JSON.parse(localStorage.getItem("listProduct")));
             // setListProduct([]);
         }
         // navigate("/Order/Manager");
 
     }
+
 
     // Cập nhật khi thay đổi trạng thái đơn hàng
     useEffect(()=>{
@@ -193,8 +205,11 @@ export default function Order(){
             console.log("Da nhan sk");
             console.log(id +"and"+orderID);
             if(data && Number(id) == Number(localStorage.getItem("orderID"))){
+                document.getElementById("status").innerHTML =`Trạng thái: <b style={{"color: red"}}>${data.status}</b>`;
+                setOrderStatus(data.status);
+                localStorage.setItem("Status",data.status);
                 console.log("OK ROI");
-                document.getElementById("status").innerHTML =`Trạng thái: <b style={{color:"red"}}>${data.status}</b>`;
+                
             }
         });
         return () => unsubscribe();
@@ -204,7 +219,7 @@ export default function Order(){
 
 
     useEffect(()=>{
-        fetch("http://coffee.local/api/product.php?action=allOfType")
+        fetch("/api/product.php?action=allOfType")
         .then((response)=> response.json())
         .then((data)=>{
             setProduct(data);
@@ -275,9 +290,11 @@ export default function Order(){
     }
 
     useEffect(()=>{
-        const total = document.querySelector(".order-total_content h3");
+        const total = document.querySelector(".order-total_content #total");
+        const total2 = document.querySelector(".order-total_content #total2");
 
         total.innerText = "Tổng tiền: " + totalSelected.toLocaleString("vi-VN",{style:"currency",currency:"VND"});
+        total2.innerText = "Tổng tiền: " + totalSelected.toLocaleString("vi-VN",{style:"currency",currency:"VND"});
     },[totalSelected])
 
     const hanldeClick = (sp) => {
@@ -379,7 +396,7 @@ export default function Order(){
                 </div>
                 <div style={{display : showOrderComplete ? "flex" : "none"}} className="order-complete">
                 </div>
-                <div style={{display : showOrderComplete ? "none" : role !="" ? "none" : "grid"}} id="order-delivery" className="order-total">
+                <div style={{display : showOrderComplete ? "none" : role !="" || data != "" ? "none" : "grid"}} id="order-delivery" className="order-total">
                     <div className="note">
                         <label htmlFor="note">
                             Ghi chú
@@ -387,7 +404,7 @@ export default function Order(){
                         <input type="text" name="note" id="note"/>
                     </div>
                     <div className="order-total_content">
-                        <h3 id="total">Tổng tiền:</h3>
+                        <h3 id="total2">Tổng tiền:</h3>
                         <button id="order" onClick={()=>
                             {
                                 document.body.style.overflow = "hidden";
@@ -398,7 +415,7 @@ export default function Order(){
                         </button>
                     </div>
                 </div>
-                <div style={{display : showOrderComplete ? "none" : role !="" ? "grid" : "none"}} id="order-total" className="order-total">
+                <div style={{display : showOrderComplete ? "none" : role !="" || data == 1 ? "grid" : "none"}} id="order-total" className="order-total">
 
                     <div className="note">
                         <label htmlFor="note">
@@ -430,7 +447,7 @@ export default function Order(){
                     <div className="order-total_content">
                         <h3 id="total">Tổng tiền:{Number(totalSelected).toLocaleString("vi-VN",{style:"currency",currency:"VND"})}</h3>
                         <h3 id="table2">Bàn:{tableSelected}</h3>
-                        <h3 id="status">Trạng thái: <b style={{color:"red"}}>Xác nhận</b></h3>
+                        <h3 id="status">Trạng thái: <b style={{color:"red"}}>{orderStatus}</b></h3>
                         <button id="order" onClick={orderClick}>New Order</button>
                         <button id="pay" onClick={()=> navigate("/Payment")}>Thanh toán</button>
                     </div>

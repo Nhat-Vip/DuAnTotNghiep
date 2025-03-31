@@ -32,7 +32,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     $email = !empty($_POST["email"]) ? $conn->real_escape_string($_POST["email"]) : "";
     $sdt = !empty($_POST["sdt"]) ? $conn->real_escape_string($_POST["sdt"]) : "";
     $userPwd = !empty($_POST["pwd"]) ? $conn->real_escape_string($_POST["pwd"]) : "";
-    $userRole = !empty($_POST["role"]) ? $conn->real_escape_string($_POST["role"]) : "";
+    $userRole = !empty($_POST["role"]) ? $conn->real_escape_string($_POST["role"]) : "0";
     $userStatus = !empty($_POST["status"]) ? $conn->real_escape_string($_POST["status"]) : "";
     $userID = !empty($_POST["userID"]) ? $conn->real_escape_string($_POST["userID"]) : "";
     

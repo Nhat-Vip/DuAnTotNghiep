@@ -1,25 +1,22 @@
-# Sử dụng image PHP chính thức làm base image
-FROM php:7.4-cli
+# Sử dụng PHP 8.2
+FROM php:8.2-cli
 
-# Cài đặt các extension cần thiết
-RUN apt-get update && apt-get install -y libxml2-dev libpng-dev libjpeg-dev libfreetype6-dev && \
-    docker-php-ext-configure gd --with-freetype --with-jpeg && \
-    docker-php-ext-install gd xml
+# Cập nhật hệ thống và cài đặt Composer
+RUN apt-get update && apt-get install -y unzip
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Cài đặt Composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+# Cài đặt MySQLi extension
+RUN docker-php-ext-install mysqli pdo pdo_mysql
 
-# Chép mã nguồn vào container
-COPY . /var/www/html/
-
-# Thiết lập thư mục làm việc
+# Đặt thư mục làm việc
 WORKDIR /var/www/html
+COPY . /var/www/html
 
-# Chạy Composer để cài đặt các phụ thuộc PHP
-RUN composer install
+# Cài đặt thư viện PHP bằng Composer
+RUN composer install --no-dev --optimize-autoloader --ignore-platform-reqs
 
-# Mở cổng 8000
-EXPOSE 8000
+# Expose cổng 10000
+EXPOSE 10000
 
-# Chạy PHP built-in server
-CMD ["php", "-S", "0.0.0.0:8000", "-t", "public"]
+# Chạy server PHP
+CMD ["php", "-S", "0.0.0.0:10000", "-t", "/var/www/html"]

@@ -13,7 +13,7 @@ export default function Ingredient(){
     });
 
     const LoadIngredient = () =>{
-        fetch("/api/Ingredient.php?action=all")
+        fetch("https://php-api-backend.onrender.com/api/Ingredient.php?action=all")
         .then((response)=>response.json())
         .then((data)=>{
             console.log(data);
@@ -37,7 +37,7 @@ export default function Ingredient(){
 
         // console.log(formData.get("id"));
         try{
-            const reponse = await fetch(`/api/Ingredient.php?action=${type}`,{
+            const reponse = await fetch(`https://php-api-backend.onrender.com/api/Ingredient.php?action=${type}`,{
                 method:"POST",
                 body:formData
             });
@@ -87,7 +87,7 @@ export default function Ingredient(){
         <div className="form-product-container">
             <div className="form-product">
                 <h2>Nguyên liệu</h2>
-                <form method="post" ref={formRef} action={`/api/product.php?action=insert&id=${subIngredient.id}`} encType="multipart/form-data">
+                <form method="post" ref={formRef} action={`https://php-api-backend.onrender.com/api/product.php?action=insert&id=${subIngredient.id}`} encType="multipart/form-data">
                     <input name="name" value={subIngredient.name} style={{"--i":"100%"}} type="text" placeholder="Tên nguyên liệu" 
                     onChange={(e) => setSubIngredient({...subIngredient, name: e.target.value})} />
 

@@ -94,7 +94,7 @@ export default function Payment(){
                             <span>{Number(total).toLocaleString("vi-VN",{style:"currency",currency:"VND"})}</span>
                         </div>
                     </div>
-                    <Link to="/Order"> {"<"} Quay lại</Link>
+                    <Link onClick={() => window.history.back()}> {"<"} Quay lại</Link>
             </div>
     )
 }

@@ -19,6 +19,7 @@ import Statistical_Ingredient from "./pages/Statiscal_Ingredient.jsx";
 import Order_Manager from "./pages/Order-Manager.jsx";
 import OrderDetail from "./pages/OrderDetail.jsx";
 import Payment from "./pages/Payment.jsx";
+import OrderTracking from "./pages/Order-Tracking.jsx";
 // import Admin from "./components/Admin.jsx";
  // Nếu muốn giữ Header trên tất cả các trang
 
@@ -45,6 +46,7 @@ function App() {
           <Route path="/Order-Detail" element={<ManagerLayout> <OrderDetail /> </ManagerLayout>}/>
           <Route path="/Login" element={<ManagerLayout> <Login /> </ManagerLayout>}/>
           <Route path="/Payment" element={<ManagerLayout> <Payment /> </ManagerLayout>}/>
+          <Route path="/Order/Order-Tracking" element={<ManagerLayout> <OrderTracking /> </ManagerLayout>}/>
         </Routes>
     </Router>
   );

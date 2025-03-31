@@ -10,6 +10,14 @@ function Header() {
   const location = useLocation();
   const menuRef = useRef([]);
 
+  const productRef = useRef(null);
+  const userRef = useRef(null);
+  const orderRef = useRef(null);
+  const IngredinetRef = useRef(null);
+  const stIngredientRef = useRef(null);
+  const statisticalRef = useRef(null);
+
+
   const navigate = useNavigate();
 
   const menuPaths = location.pathname.split("/")[1];
@@ -24,7 +32,11 @@ function Header() {
 
   const[notifications,setNotifications] = useState(0);
 
-  const [lastOrderId, setLastOrderId] = useState(localStorage.getItem("lastOrderId") || null);
+  // localStorage.setItem("lastOrderId",0);
+
+  const [lastOrderId, setLastOrderId] = useState(localStorage.getItem("lastOrderId") || 0);
+  // const [lastOrderId, setLastOrderId] = useState(0);
+
 
 
   // Kiểm tra đăng nhập
@@ -56,8 +68,21 @@ function Header() {
       notification.style.display = "none";
       setRole(userRole);
     }
-    else if (userRole == 0 || userRole == 1){
+    else if (userRole == 0){
       manager.style.display = "block";
+      productRef.current.style.display = "none";
+      userRef.current.style.display ="none";
+      IngredinetRef.current.style.display = "none";
+      statisticalRef.current.style.display = "none";
+      notification.style.display = "flex";
+      setRole(userRole);
+    }
+    else if(userRole == 1){
+      manager.style.display = "block";
+      productRef.current.style.display = "block";
+      userRef.current.style.display ="block";
+      IngredinetRef.current.style.display = "block";
+      statisticalRef.current.style.display = "block";
       notification.style.display = "flex";
       setRole(userRole);
     }
@@ -68,7 +93,7 @@ function Header() {
         const orderRef = ref(database, "orders");
         const handleNewOrder = (snapshot) =>{
           const orderId = snapshot.key;
-          // console.log("cos don hang");
+          console.log("cos don hang");
           // console.log("lastOrderID: ",lastOrderId + "orderID: ",orderId);
           // setLastOrderId(orderId);
           if (!lastOrderId || Number(orderId) > Number(lastOrderId)) {
@@ -76,8 +101,9 @@ function Header() {
             console.log(notifications);
             setNotifications((prev) => prev+1);
             localStorage.setItem("lastOrderId", orderId);
-            setLastOrderId(()=>orderId);
-            console.log(lastOrderId);
+            // console.log("order id:",orderId);
+            setLastOrderId(orderId);
+            // console.log(lastOrderId);
             // ShowNotificationNumber();
           }
         }
@@ -155,19 +181,23 @@ function Header() {
               <li id="Manager" className={`${styles.dropdown} ${styles.menu2}`} ref={(el) => menuRef.current[2] = el}>
                     <Link to="/Manager/ProductManager" className={styles["dropdown-btn"]} >Quản lý</Link>
                     <div className={styles["dropdown-content"]}>
-                        <Link to="/Manager/ProductManager">Quản lý sản phẩm</Link>
-                        <Link to="/Manager/Users">Quản lý nhân viên</Link>
-                        <Link to="/Manager/Order">Quản lý đơn hàng</Link>
-                        <Link to="/Manager/Ingredient">Quản lý Nguyên liệu</Link>
-                        <Link to="/Manager/Statistical-Ingredient">Thống kê nguyên liệu</Link>
-                        <Link to="/Manager/Statistical">Thống kê</Link>
+                        <Link ref={productRef} to="/Manager/ProductManager">Quản lý sản phẩm</Link>
+                        <Link ref={userRef} to="/Manager/Users">Quản lý nhân viên</Link>
+                        <Link ref={orderRef} to="/Manager/Order">Quản lý đơn hàng</Link>
+                        <Link ref={IngredinetRef} to="/Manager/Ingredient">Quản lý Nguyên liệu</Link>
+                        <Link ref={stIngredientRef} to="/Manager/Statistical-Ingredient">Thống kê nguyên liệu</Link>
+                        <Link ref={statisticalRef} to="/Manager/Statistical">Thống kê</Link>
                         {/* <Link to="#">Trà trái cây</Link>
                         <Link to="#">Trái cây xay</Link>
                         <Link to="#">Bánh ngọt</Link> */}
                     </div>
               </li>
-              <li id="Order" ref={(el) => menuRef.current[3] = el}>
+              <li id="Order" className={`${styles.dropdown} ${styles.menu2}`} ref={(el) => menuRef.current[3] = el}>
                 <Link to="/Order">Đặt hàng</Link>
+                <div className={styles["dropdown-content"]}>
+                        <Link to="/Order">Đặt Hàng</Link>
+                        <Link to="/Order/Order-Tracking">Tra cứu đơn hàng</Link>
+                    </div>
               </li>
               {/* <Link ref={(el) => menuRef.current[4] = el} to="TuyenDung.html">Tuyển dụng</Link> */}
             </ol>
@@ -186,7 +216,9 @@ function Header() {
                   <li onClick={()=>{navigate("/User-profile")}}>Profile</li>
                   <li onClick={()=>{setRole(null); setLoginStatus(0); 
                       localStorage.setItem("role",""); localStorage.setItem("status",0),
-                      localStorage.setItem("userID","");window.location.reload();}}>
+                      localStorage.setItem("userID","");
+                      navigate("/home");
+                      window.location.reload();}}>
                       Log out
                   </li>
                 </ol>

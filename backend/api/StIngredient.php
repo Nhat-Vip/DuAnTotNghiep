@@ -33,9 +33,6 @@ function check(){
         echo json_encode(["status"=>"Error","message"=>"Chưa chọn nguyên liệu để sửa"], JSON_UNESCAPED_UNICODE);
         exit();
     }
-    elseif(!isset($note) || empty($note)){
-        $note = "Empty";
-    }
 }
 
 function GetAll(){
@@ -43,7 +40,7 @@ function GetAll(){
     $todayStart = date("Y-m-d 00:00:00");
     $todayEnd = date("Y-m-d 23:59:59");
 
-    $sql = "SELECT * FROM coffeeshopmanager.statistical_ingredient
+    $sql = "SELECT * FROM statistical_ingredient
     where stIngredientDate between '$todayStart' 
     and '$todayEnd'";
 
@@ -63,6 +60,9 @@ function GetAll(){
 function Insert(){
     global $conn,$ingredientId,$userID,$quantity,$note,$name;
     check();
+    if(!isset($note) || empty($note)){
+        $note = 'Empty';
+    }
     $sql = "INSERT into statistical_ingredient(ingredientId,userID,quantity,ingredientName,note)
             Values('$ingredientId','$userID','$quantity','$name','$note')";
     $sql2 = "UPDATE ingredient

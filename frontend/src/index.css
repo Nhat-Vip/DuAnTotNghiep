@@ -997,165 +997,44 @@ a:hover {
   flex: 1;
 }
 
-
-
-/* Table */
-
-.legend {
+/* Order-tracking */
+.orderTracking_container{
+  width: 100vw;
+  margin: 50px auto;
+  max-width: 80%;
+  height: 300px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  gap: 20px;
-  margin: 20px auto;
-  padding: 15px;
-  background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
-  width: fit-content;
-}
-
-.legend-item {
-  display: flex;
   align-items: center;
-  gap: 5px;
-  font-size: 14px;
 }
-
-.seat {
-  width: 20px;
-  height: 20px;
-  border-radius: 5px;
-  display: inline-block;
-}
-
-/* Màu sắc trạng thái bàn */
-.available {
-  background-color: #ccc;
-}
-
-.selected {
-  background-color: #002147;
-}
-
-.reserved {
-  background-color: #dc3545;
-}
-
-/* Căn chỉnh layout */
-.table-container {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 15px;
-  max-width: 600px;
-  margin: auto;
-}
-
-/* Kiểu dáng bàn */
-#tableContainer {
+.Search{
   display: flex;
-  flex-wrap: wrap;
+  width:70%;
+  margin-bottom: 20px;
+  & input{
+    width: 100%;
+    padding: 10px 15px;
+    border:  1px solid rgba(0, 0, 0, 0.2);
+    /* box-shadow: 5px 10px 4px rgba(0, 0, 0, 0.7),-1px -1px 5px rgba(0, 0, 0, 0.5); */
+    border-radius: 10px;
+  }
+  & button{
+    border-radius: 10px;
+    margin-left: 10px;
+  }
+}
+.orderTracking_content{
+  display: none;
+  width: 70%;
+  /* display: flex; */
   justify-content: center;
-  /* Căn giữa theo chiều ngang */
   align-items: center;
-  /* Căn giữa theo chiều dọc */
-  width: 100%;
-  height: 80vh;
-  /* Chiếm 80% màn hình */
-  position: relative;
-}
-
-.table {
-  position: absolute;
-  width: 35px;
-  height: 35px;
-  background-color: #ccc;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-weight: bold;
-  font-size: 12px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
-}
-
-.table:hover {
-  transform: scale(1.1);
-}
-
-.selected {
-  background-color: #002147;
-  color: white;
-}
-
-.reserved {
-  background-color: #dc3545;
-  color: white;
-}
-
-.entry {
-  position: relative;
-  /* Hoặc absolute nếu cần */
-  margin-top: 18px;
-  font-size: 16px;
-  font-weight: bold;
-  color: white;
-  background-color: #28a745;
-  padding: 10px 20px;
-  border-radius: 10px;
-  display: inline-block;
-  margin-bottom: 30px;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
-  z-index: 3;
-}
-
-/* Cửa sổ kính */
-.window {
-  position: absolute;
-  width: 80px;
-  height: 10px;
-  background-color: #87CEEB;
-  /* Xanh kính */
-  border-radius: 5px;
-  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
-  z-index: 2;
-  /* Đè lên tường */
-}
-
-/* Tường bao quanh */
-.wall {
-  position: absolute;
-  background-color: #333;
-  z-index: 1;
-}
-
-.top-wall {
-  top: 250px;
-  left: 250;
-  width: 53%;
-  height: 10px;
-}
-
-.bottom-wall {
-  bottom: 60px;
-  left: 250;
-  width: 53%;
-  height: 10px;
-}
-
-.left-wall {
-  top: 250px;
-  left: 345px;
-  width: 10px;
-  height: 60.7%;
-}
-
-.right-wall {
-  top: 250px;
-  right: 345px;
-  width: 10px;
-  height: 60.7%;
+  & h3{
+    font-size: 20px;
+    font-weight: bold;
+  }
 }
 
 @media only screen and (max-width:767px) {

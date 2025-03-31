@@ -14,6 +14,9 @@ require __DIR__ . '/../vendor/autoload.php';
 
 use Kreait\Firebase\Factory;
 
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
 
 $factory = (new Factory)
     ->withServiceAccount(__DIR__ . '/coffeeshopmanager-7ec48-firebase-adminsdk-fbsvc-f7ae2e149d.json')
@@ -54,6 +57,33 @@ function GetAllOrdDetail()
     }
 
     echo json_encode($order, JSON_UNESCAPED_UNICODE);
+}
+
+function FindOrder(){
+    global $conn;
+    $orderId = $_GET['id'] ?? "";
+    if(empty($orderId)){
+        echo json_encode("OrderID: $orderId");
+        exit();
+    }
+    preg_match('/DH(\d+)/',$orderId,$matches);
+    if(!empty($matches)){
+        $orderId = end($matches);
+    }
+    $result = $conn->query("SELECT*from orders where orderID = '$orderId' or sdt = '$orderId' AND orderStatus NOT IN ('Hoàn thành', 'Đã hủy', 'Đã thanh toán')");
+    $order = [];
+    if($result->num_rows>0){
+        while($row = $result->fetch_assoc()){
+            $order[] = $row;
+        }
+    }
+    else{
+        echo json_encode(["id"=>"$orderId","status"=>"Error","message"=>"Không tìm thấy đơn hàng"]);
+        exit();
+    }
+
+    echo json_encode($order, JSON_UNESCAPED_UNICODE);
+    exit();
 }
 
 function InsertOrder()
@@ -132,8 +162,10 @@ function UpdateOrder()
     $data = json_decode(file_get_contents("php://input"),true);
     $id = $data["id"] ?? "";
     $status = $data["status"] ?? "";
+    $total = $data["total"];
     $sql = "UPDATE orders
-            set orderStatus = '$status'
+            set orderStatus = '$status',
+            total = '$total'
             where orderID = '$id'";
 
     if (empty($id)) {
@@ -163,6 +195,14 @@ if ($action == "insert") {
 } elseif ($action == "ordDetail") {
     GetAllOrdDetail();
 }
+elseif($action == "find"){
+    FindOrder();
+}
+else {
+    echo json_encode(["error" => "Invalid action"], JSON_UNESCAPED_UNICODE);
+    exit();
+}
+
 
 
 // if ($_SERVER["REQUEST_METHOD"] == "POST") {

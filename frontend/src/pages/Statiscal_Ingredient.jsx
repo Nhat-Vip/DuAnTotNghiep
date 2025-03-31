@@ -177,10 +177,11 @@ export default function Statistical_Ingredient(){
                 <table id="StIngredient">
                     <thead>
                         <tr>
-                            <th style={{"--i":"25%"}}>Tên sản phẩm</th>
-                            <th style={{"--i":"25%"}}>Số lượng</th>
+                            <th style={{"--i":"20%"}}>Tên sản phẩm</th>
+                            <th style={{"--i":"15%"}}>Số lượng</th>
                             <th style={{"--i":"25%"}}>Ghi chú</th>
-                            <th style={{"--i":"25%"}}>User</th>
+                            <th style={{"--i":"200%"}}>Thời gian</th>
+                            <th style={{"--i":"20%"}}>User</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -190,6 +191,7 @@ export default function Statistical_Ingredient(){
                                     <td>{sp.ingredientName}</td>
                                     <td>{Number(sp.quantity)}</td>
                                     <td>{sp.note}</td>
+                                    <td>{sp.stIngredientDate}</td>
                                     <td>{sp.userID}</td>
                                 </tr>
                             ))
