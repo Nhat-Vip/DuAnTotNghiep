@@ -8,8 +8,8 @@ export default defineConfig({
     server: {
     proxy: {
       "/api": {
-        // target: "https://php-api-backend.onrender.com",
-        target: "http://coffee.local",
+        target: "https://php-api-backend.onrender.com",
+        // target: "http://coffee.local",
         changeOrigin: true,
         secure: false,
       },
