@@ -1044,8 +1044,8 @@ a:hover {
   .product_item{
     grid-template-columns: repeat(2,1fr);
   }
-  .slected-product{
-    display: none;
+ #slProduct{
+    display: none !important;
   }
   .open-menu{
     display: block;
