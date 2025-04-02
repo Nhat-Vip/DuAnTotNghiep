@@ -75,6 +75,7 @@ function Header() {
       IngredinetRef.current.style.display = "none";
       statisticalRef.current.style.display = "none";
       notification.style.display = "flex";
+      document.getElementById("Statistical").style.display = "none";
       setRole(userRole);
     }
     else if(userRole == 1){
@@ -84,6 +85,7 @@ function Header() {
       IngredinetRef.current.style.display = "block";
       statisticalRef.current.style.display = "block";
       notification.style.display = "flex";
+      document.getElementById("Statistical").style.display = "block";
       setRole(userRole);
     }
   },[role]);
@@ -193,7 +195,7 @@ function Header() {
                         <Link to="#">Bánh ngọt</Link> */}
                     </div>
               </li>
-              <li id="Manager" className={`${styles.dropdown} ${styles.menu2}`} ref={(el) => menuRef.current[2] = el}>
+              <li id="Statistical" className={`${styles.dropdown} ${styles.menu2}`} ref={(el) => menuRef.current[2] = el}>
                     <Link to="/Manager/ProductManager" className={styles["dropdown-btn"]} >Báo cáo</Link>
                     <div className={styles["dropdown-content"]}>
                         <Link ref={stIngredientRef} to="/Manager/Statistical-Ingredient">Thống kê nguyên liệu</Link>
