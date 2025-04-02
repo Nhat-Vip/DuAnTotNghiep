@@ -66,6 +66,7 @@ function Header() {
     if(userRole == "" || userRole == null){
       manager.style.display = "none";
       notification.style.display = "none";
+      document.getElementById("Statistical").style.display = "none";
       setRole(userRole);
     }
     else if (userRole == 0){
