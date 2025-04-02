@@ -12,6 +12,7 @@ export default function Statistical(){
             .then((data)=>{ 
                 if (Array.isArray(data)) {
                 setStatistical(data);
+                setSubStatistical(data);
                 console.log(data);
                 } else {
                 console.error("API trả về không phải mảng:", data);
@@ -41,6 +42,7 @@ export default function Statistical(){
                     const today = new Date().toISOString().split("T")[0];
                     const data  = statistical.filter((sta)=>{
                         const orderDate = new Date(sta.orderDate).toISOString().split("T")[0];
+                        console.log("Today",today + "orderDate",orderDate);
                         return orderDate == today
                     })
                     setSubStatistical(data);
@@ -93,7 +95,7 @@ export default function Statistical(){
                 </thead>
                 <tbody>
                     {
-                        statistical.map((sp,key)=>(
+                        subStatistical.map((sp,key)=>(
                             <tr key={key}>
                                 <td>{key}</td>
                                 <td>{sp.productName}</td>
@@ -118,13 +120,13 @@ export default function Statistical(){
                 </thead>
                 <tbody>
                     {
-                        statistical.map((sp,key)=>(
+                        subStatistical.map((sp,key)=>(
                             <tr key={key}>
                                 <td>{key}</td>
                                 <td>{sp.userName}</td>
                                 <td>{sp.IngredientName}</td>
                                 <td>{sp.quantity}</td>
-                                <td>{sp.time}</td>
+                                <td>{sp.orderDate}</td>
                                 <td>{sp.note}</td>
                             </tr>
                         ))

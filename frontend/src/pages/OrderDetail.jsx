@@ -65,12 +65,12 @@ export default function OrderDetail(){
                 <div className="form-product">
                     <h2>Chi tiết đơn hàng</h2>
                     <form method="post" encType="multipart/form-data">
-                        <input name="productName" value={subOrder.OrderName} style={{"--i":"47%"}} type="text" placeholder="Tên sản phẩm" disabled/>
-
+                        <input value={"Bàn: "+subOrder.tableID} style={{"--i":"47%"}} type="text" placeholder="Số bàn" disabled/>
                         <input name="price" value={total} style={{"--i":"47%"}} 
                         type="text" placeholder="Tổng" onChange={(e)=>setTotal(e.target.value)}/>
+                        <input name="productName" value={subOrder.OrderName} style={{"--i":"47%"}} type="text" placeholder="Tên sản phẩm" disabled/>
 
-                        <input value={"Bàn: "+subOrder.tableID} style={{"--i":"30%"}} type="text" placeholder="Số bàn" disabled/>
+
                         <select value={status} name="status" id="status" style={{"--i":"47%"}} onChange={(e)=>setStatus(e.target.value)}>
                             <option value="Xác nhận">Xác nhận</option>
                             <option value="Đang làm">Đang làm</option>
@@ -79,7 +79,8 @@ export default function OrderDetail(){
                             <option value="Đã hủy">Đã hủy</option>
                         </select>
                         <input name="detail" value={subOrder.note} type="text" placeholder="Ghi chú" style={{"--i":"100%"}} disabled/>
-                        <input type="button" value="Cập nhật" style={{"--i":"100%"}} onClick={(event)=>{handleUpdateClick(event)}}/>
+                        <input type="button" value="Cập nhật" style={{"--i":"45%"}} onClick={(event)=>{handleUpdateClick(event)}}/>
+                        <input type="button" value="Thanh toán" id="pay" style={{"--i":"45%"}} onClick={()=> navigate("/Payment",{state:{total:total.replace(/\D/g,""),orderDetails}})}/>
                     </form>
                 </div>
                 <div className="List-product_manager">

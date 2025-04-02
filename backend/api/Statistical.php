@@ -8,10 +8,10 @@ include_once "../config/database.php";
 function GetProduct(){
     global $conn;
 
-    $sql = "select prd.productName as 'productName',ord.orderDate, prd.price as 'price',sum(ord.total) as 'total', sum(ordt.quantity) as 'quantity' From orders ord join orderdetails ordt
+    $sql = "select prd.productName as 'productName',MIN(ord.orderDate), prd.price as 'price',SUM(ordt.quantity * prd.price) as 'total', sum(ordt.quantity) as 'quantity' From orders ord join orderdetails ordt
             on ord.orderID = ordt.orderID
             join product prd on prd.productID = ordt.productID
-            where ord.orderStatus = 'Xác nhận'
+            where ord.orderStatus = 'Đã thanh toán'
             group by ordt.productID;";
 
 

@@ -1,4 +1,5 @@
 import React,{useState,useEffect} from "react";
+import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
@@ -8,9 +9,14 @@ import { onChildChanged } from "firebase/database";
 
 export default function Payment(){
 
-    const [listProduct,setListProduct] = useState(localStorage.getItem("listProduct")?JSON.parse(localStorage.getItem("listProduct")) : []);
-    console.log(listProduct);
-    const total = localStorage.getItem("total");
+    // const [listProduct,setListProduct] = useState(localStorage.getItem("listProduct")?JSON.parse(localStorage.getItem("listProduct")) : []);
+    const location = useLocation();
+    const {total,orderDetails} = location.state;
+    console.log(orderDetails);
+
+    const [product,setProduct] = useState([]);
+    // console.log(listProduct);
+    // const total = localStorage.getItem("total");
     useEffect(()=>{
         const orderRef = ref(database,"orders");
         
@@ -31,6 +37,17 @@ export default function Payment(){
         });
         return () => unsubscribe();
     },[]);
+
+    useEffect(()=>{
+            fetch("/api/product.php?action=all")
+            .then((response)=>response.json())
+            .then((data)=>{
+                setProduct(data);
+            })
+            .catch((err)=>console.error("Lỗi: ",err));
+        },[]);
+
+
     return(
             <div className="payment-container">
                     <h1><FontAwesomeIcon id="icon" icon={faCircleCheck} /> Đặt hàng thành công</h1>
@@ -39,7 +56,7 @@ export default function Payment(){
                         <div className="payment-type-content">
                             <div className="payment-type_qr">
                                 <p>Cách 1 : Mở app ngân hàng và quét QR</p>
-                                <img src={`https://qr.sepay.vn/img?acc=0379530805&bank=MB&amount=${total}&des=DH${localStorage.getItem("orderID")}&template=compact`} alt="qr-code" width={300} />
+                                <img src={`https://qr.sepay.vn/img?acc=0379530805&bank=MB&amount=${total}&des=DH${orderDetails.OrderID}&template=compact`} alt="qr-code" width={300} />
                                 <span>Trạng thái: Chờ thanh toán ....</span>
                             </div>
                             <div className="payment-type_handmade">
@@ -62,7 +79,7 @@ export default function Payment(){
                                                 <td><b>{Number(total).toLocaleString("vi-VN",{style:"currency",currency:"VND"})}</b></td>
                                             </tr>
                                             <tr>
-                                                <td>Nội dung CK:</td>
+                                                <td>Nội dung CK: DH{orderDetails.OrderID}</td>
                                                 <td><b>Nguyễn Cự Nhật</b></td>
                                             </tr>
                                         </tbody>
@@ -80,9 +97,9 @@ export default function Payment(){
                     <div className="order-information">
                         <span>Thông tin đơn hàng</span>
                         {
-                            listProduct.map((sp)=>(
+                            orderDetails.map((sp)=>(
                                 <div className="item">
-                                    <span>{sp.name}</span>
+                                    <span>{product.find((prd)=>Number(prd.productID) == Number(sp.productID))?.productName}</span>
                                     <span>{sp.quantity}</span>
                                     <span>{sp.price}</span>
                                 </div>

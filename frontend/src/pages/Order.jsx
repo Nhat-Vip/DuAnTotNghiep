@@ -2,11 +2,10 @@ import React,{useState,useEffect} from "react";
 import { Link ,useNavigate,useLocation} from "react-router-dom";
 
 // import { useNavigate } from "react-router-dom";
-import { database, ref } from "../components/firebase";
-import { onChildChanged } from "firebase/database";
 
 export default function Order(){
     const [product,setProduct] = useState([]);
+    const [subProduct,setSubProduct] = useState([]);
     const navigate = useNavigate();
 
     const location = useLocation();
@@ -14,13 +13,13 @@ export default function Order(){
     const data = params.get("qr") ?? "";
 
 
-    const [listProduct,setListProduct] = useState(localStorage.getItem("listProduct") ?  JSON.parse(localStorage.getItem("listProduct")) : []);
+    const [listProduct,setListProduct] = useState([]);
     const [totalSelected,setTotalSelected] = useState(0);
-    const [orderStatus,setOrderStatus] = useState(localStorage.getItem("Status") || "Xác nhận");
-    const [orderComplete,setOrderComplete] = useState(localStorage.getItem("orderStatus")==="true");
-    const [showOrderComplete,setShowOrderComplete] = useState(orderComplete);
-    const [orderID,setOrderID] = useState(0);
-    const [order,setOrder] = useState([]);
+    // const [orderStatus,setOrderStatus] = useState(localStorage.getItem("Status") || "Xác nhận");
+    // const [orderComplete,setOrderComplete] = useState(localStorage.getItem("orderStatus")==="true");
+    // const [showOrderComplete,setShowOrderComplete] = useState(orderComplete);
+    // const [orderID,setOrderID] = useState(0);
+    // const [order,setOrder] = useState([]);
     const role = localStorage.getItem("role");
     // const navigate = useNavigate();
     const [openMenu,setOpenMenu] = useState(false);
@@ -35,31 +34,6 @@ export default function Order(){
         price:"",
         quantity: "",
     });
-    useEffect(()=>{
-         console.log("useEffect chạy, orderComplete:", orderComplete);
-        if(orderComplete == true){
-            LoadOrderComplete();
-            // console.log("Role: ",role !="");
-            // if(role == "" || role == null){
-            //     document.getElementById("order-delivery").style.display = "none";
-            // }
-        }
-        setShowOrderComplete(orderComplete);
-    },[orderComplete]);//eslint-disable-line
-
-
-    // Nhận các bàn từ csdl
-
-    // const LoadTable = async () =>{
-    //     const response = await fetch("/api/table.php?action=get")
-        
-    //     const text = await response.text();
-    //     console.log("Raw response: ",text);
-
-    //     const result = JSON.parse(text);
-
-    //     setTable(result);
-    // }
 
     useEffect(() =>{
         fetch("/api/table.php?action=get")
@@ -68,97 +42,48 @@ export default function Order(){
             setTable(data);
         })
         .catch((err)=>console.error("Lỗi: ",err));
-
-        // if(localStorage.getItem("role")==""){
-        //     // document.body.style.overflow = "hidden";
-        //     document.getElementById("order-delivery").style.display = "grid";
-        //     document.getElementById("order-total").style.display = "none";
-        // }
-        // else{
-        //     document.getElementById("order-delivery").style.display = "none";
-        //     document.getElementById("order-total").style.display = "grid";
-        // }
     },[]);
 
-    const LoadOrderComplete = ()=>{
-        console.log("Đã gọi");
-        const orderContainer = document.querySelector(".order-complete");
-        setTotalSelected(0);
-        orderContainer.replaceChildren();
-        listProduct.map((sp)=>{
-                            orderContainer.innerHTML += `
-                                <div class="order-product_item" >
-                                    <div class="product-item_image">
-                                        <img src= "${sp.image}" alt=""/>
-                                    </div>
-                                    <div class="product-item_content">
-                                        <p>${sp.name}</p>
-                                        <p>${Number(sp.price).toLocaleString("vi-VN",{style:"currency",currency:"VND"})}</p>
-                                    </div>
-                                </div>
-                                `
-                                setTotalSelected((prev)=>Number(prev) + Number(sp.price));
-                            })
-        // listProduct.map((sp)=>{
-        //     let item = {
-        //                 listProduct.map((sp)=>{
-        //                     <div className="order-product_item" >
-        //                         <div className="product-item_image">
-        //                             <img src={sp.image} alt=""/>
-        //                         </div>
-        //                         <div className="product-item_content">
-        //                             <p>{sp.name}</p>
-        //                             <p>{Number(sp.price).toLocaleString("vi-VN",{style:"currency",currency:"VND"})}</p>
-        //                         </div>
-        //                     </div>
-        //                 })
-        //             }document.createElement("div");
-        //     item.className = "order-product_item";
-        //     item.innerHTML = ``
-        // })
-        
-    }
 
 
     // mở menu cho mobile
-    const handleOpenMenu = (e) =>{
-        if(openMenu == false){
-            e.target.style.right = 'calc(50vw)';
-            e.target.innerHTML = ">";
-            document.querySelector(".phone-menu").style.right = '0';
-        }
-        else{
-            e.target.style.right = '0';
-            e.target.innerHTML = "<";
-            document.querySelector(".phone-menu").style.right = '-50vw';
-        }
-        setOpenMenu((prev)=>!prev);
-    }
+    // const handleOpenMenu = (e) =>{
+    //     if(openMenu == false){
+    //         e.target.style.right = 'calc(50vw)';
+    //         e.target.innerHTML = ">";
+    //         document.querySelector(".phone-menu").style.right = '0';
+    //     }
+    //     else{
+    //         e.target.style.right = '0';
+    //         e.target.innerHTML = "<";
+    //         document.querySelector(".phone-menu").style.right = '-50vw';
+    //     }
+    //     setOpenMenu((prev)=>!prev);
+    // }
 
 
     const orderClick = async()=>{
-        console.log("don moi:",orderComplete);
-        if(orderComplete){ //kiểm tra nếu là tạo đơn hàng mới
-            localStorage.setItem("Status","Xác nhận");
-            setOrderStatus("Xác nhận");
-            document.getElementById("status").innerHTML =`Trạng thái: <b style={{"color: red"}}>Xác nhận</b>`;
-            setOrderComplete(false);
-            localStorage.setItem("orderStatus",false);
-            setListProduct([]);
-            setTotalSelected(0);
-            localStorage.setItem("listProduct","");
-            return;
-        }
+        // console.log("don moi:",orderComplete);
+        // if(orderComplete){ //kiểm tra nếu là tạo đơn hàng mới
+        //     // localStorage.setItem("Status","Xác nhận");
+        //     // setOrderStatus("Xác nhận");
+        //     // document.getElementById("status").innerHTML =`Trạng thái: <b style={{"color: red"}}>Xác nhận</b>`;
+        //     // setOrderComplete(false);
+        //     // localStorage.setItem("orderStatus",false);
+        //     setListProduct([]);
+        //     setTotalSelected(0);
+        //     localStorage.setItem("listProduct","");
+        //     return;
+        // }
 
 
         console.log("ListProduct",listProduct);
         const orderInformation = {
             orderName : "",
             userID : localStorage.getItem("userID") ?? null,
-            tableID :document.getElementById("table").value,
+            tableID :tableSelected,
             total : totalSelected,
-            sdt: document.getElementById("sdt").value ?? "",
-            note :  document.getElementById("note").value +"\n"+ document.getElementById("address").value,
+            note :  document.getElementById("note").value,
             orderStatus:"Xác nhận"
 
         }
@@ -176,16 +101,16 @@ export default function Order(){
         alert(result.message);
         if(result.status == "Success"){
             document.querySelector(".list-product_slected").replaceChildren();
-            setOrderID(Number(result.orderID));
-            localStorage.setItem("orderID",result.orderID);
-            setOrderComplete(true);
+            // setOrderID(Number(result.orderID));
+            // localStorage.setItem("orderID",result.orderID);
+            // setOrderComplete(true);
             setTotalSelected(0);
-            localStorage.setItem("orderStatus",true);
-            localStorage.setItem("listProduct",JSON.stringify(listProduct));
-            localStorage.setItem("total",totalSelected);
+            // localStorage.setItem("orderStatus",true);
+            // localStorage.setItem("listProduct",JSON.stringify(listProduct));
+            // localStorage.setItem("total",totalSelected);
             // findOrder(result.orderID);
             console.log(JSON.parse(localStorage.getItem("listProduct")));
-            // setListProduct([]);
+            setListProduct([]);
         }
         // navigate("/Order/Manager");
 
@@ -193,27 +118,27 @@ export default function Order(){
 
 
     // Cập nhật khi thay đổi trạng thái đơn hàng
-    useEffect(()=>{
-        const orderRef = ref(database,"orders");
+    // useEffect(()=>{
+    //     const orderRef = ref(database,"orders");
         
-        const unsubscribe = onChildChanged(orderRef,(snapshot)=>{
-            console.log("OrderID",localStorage.getItem("orderID"));
-            console.log("snapShot2");
-            const data = snapshot.val();
-            const id = snapshot.key;
-            setOrderID(Number(localStorage.getItem("orderID")));
-            console.log("Da nhan sk");
-            console.log(id +"and"+orderID);
-            if(data && Number(id) == Number(localStorage.getItem("orderID"))){
-                document.getElementById("status").innerHTML =`Trạng thái: <b style={{"color: red"}}>${data.status}</b>`;
-                setOrderStatus(data.status);
-                localStorage.setItem("Status",data.status);
-                console.log("OK ROI");
+    //     const unsubscribe = onChildChanged(orderRef,(snapshot)=>{
+    //         console.log("OrderID",localStorage.getItem("orderID"));
+    //         console.log("snapShot2");
+    //         const data = snapshot.val();
+    //         const id = snapshot.key;
+    //         setOrderID(Number(localStorage.getItem("orderID")));
+    //         console.log("Da nhan sk");
+    //         console.log(id +"and"+orderID);
+    //         if(data && Number(id) == Number(localStorage.getItem("orderID"))){
+    //             document.getElementById("status").innerHTML =`Trạng thái: <b style={{"color: red"}}>${data.status}</b>`;
+    //             setOrderStatus(data.status);
+    //             localStorage.setItem("Status",data.status);
+    //             console.log("OK ROI");
                 
-            }
-        });
-        return () => unsubscribe();
-    },[]);//eslint-disable-line
+    //         }
+    //     });
+    //     return () => unsubscribe();
+    // },[]);//eslint-disable-line
 
 
 
@@ -228,60 +153,43 @@ export default function Order(){
     },[])
     
 
-    const increaseClick = (event) =>{
-        const quantity = event.target.parentNode.querySelector(".btn span");
-        const totalClass = event.target.parentNode.parentNode.querySelector(".total");
+    const increaseClick = (id) =>{
 
-        const price = event.target.parentNode.dataset.price;
-        // console.log(price);
+        // const price = event.target.parentNode.dataset.price;
+        // // console.log(price);
 
-        const quantityItem = Number(quantity.innerHTML) + 1;
-        totalClass.innerText = Number(price * quantityItem).toLocaleString("vi-VN",{style:"currency",currency:"VND"});
-        quantity.innerHTML = quantityItem;
-
-        setTotalSelected((prev) => prev + Number(price));
+        // setTotalSelected((prev) => prev + Number(price));
         setListProduct((prev) =>
             prev.map((sp) =>
-                sp.id == Number(event.target.parentNode.dataset.id)
+                sp.id == id
                 ?{...sp,quantity:Number(sp.quantity) + 1}
                 :sp
             )
         )
-        console.log(listProduct);
-        console.log(event.target.parentNode.dataset.id);
+        // console.log(listProduct);
+        // console.log(event.target.parentNode.dataset.id);
     }
 
-    const reduceClick = (event) =>{
-        const quantity = event.target.parentNode.querySelector(".btn span");
-        const totalClass = event.target.parentNode.parentNode.querySelector(".total");
+    const reduceClick = (event,id) =>{
+        const quantity = event.target.parentNode.querySelector(".btn input");
 
-        const price = event.target.parentNode.dataset.price;
+        // const price = event.target.parentNode.dataset.price;
 
-        if(Number(quantity.innerHTML) <= 1)
+        if(Number(quantity.value) <= 1)
         {
            const item = event.target.parentNode.parentNode.parentNode;
            const itemParent = document.querySelector(".list-product_slected");
 
            itemParent.removeChild(item);
-           setListProduct((prev) =>prev.filter((sp) => sp.id !== Number(event.target.parentNode.dataset.id)));
-            // prev.map((sp) =>
-            //     sp.id === Number(event.target.parentNode.dataset.id)
-            //     ?{...sp=[]}
-            //     :product
-            // )
-        // )
+           setListProduct((prev) =>prev.filter((sp) => sp.id !== id));
         }
 
-        const quantityItem = Number(quantity.innerHTML) - 1;
-        totalClass.innerText = Number(price * quantityItem).toLocaleString("vi-VN",{style:"currency",currency:"VND"});
-        quantity.innerHTML = quantityItem;
-
         // console.log(`${totalSelected} - ${price} = ${Number(totalSelected)- Number(price)}`)
-        setTotalSelected((prev) => prev - Number(price));
+        // setTotalSelected((prev) => prev - Number(price));
 
         setListProduct((prev) =>
             prev.map((sp) =>
-                sp.id === Number(event.target.parentNode.dataset.id)
+                sp.id === id
                 ?{...sp,quantity:sp.quantity - 1}
                 :sp
             )
@@ -289,12 +197,21 @@ export default function Order(){
         
     }
 
+    const updateTotal = () =>{
+        let total = listProduct.reduce((sum,sp)=>sum + (sp.quantity*sp.price),0);
+        setTotalSelected(total);
+    }
+
+    useEffect(()=>{
+        updateTotal();
+    },[listProduct])
+
     useEffect(()=>{
         const total = document.querySelector(".order-total_content #total");
-        const total2 = document.querySelector(".order-total_content #total2");
+        // const total2 = document.querySelector(".order-total_content #total2");
 
         total.innerText = "Tổng tiền: " + totalSelected.toLocaleString("vi-VN",{style:"currency",currency:"VND"});
-        total2.innerText = "Tổng tiền: " + totalSelected.toLocaleString("vi-VN",{style:"currency",currency:"VND"});
+        // total2.innerText = "Tổng tiền: " + totalSelected.toLocaleString("vi-VN",{style:"currency",currency:"VND"});
     },[totalSelected])
 
     const hanldeClick = (sp) => {
@@ -307,54 +224,85 @@ export default function Order(){
         });
     };
     
+    const hanldeTableClick = (e) =>{
+        document.querySelector(".table.active")?.classList.remove("active");
+        e.currentTarget.classList.add("active");
+        setTableSelected(e.currentTarget.dataset.id);
+    }
 
-    
+    const findProduct =(e) =>{
+        if(e.key == "Enter"){
+            const allProducts = Object.values(product).flat();
+            const newProducts = allProducts.filter((sp)=>{
+                return(
+                    sp.productName.toLowerCase().includes(e.target.value.toLowerCase())
+                )
+            });
+            setSubProduct(newProducts);
+            
+        }
+    }
+    const filterByType = (e) =>{
+
+        if(e.target.value == "All"){
+            setSubProduct([]);
+            return;
+        }
+
+        const allProducts = Object.values(product).flat();
+        const newProduct = allProducts.filter((sp)=>{
+            return(
+                sp.productType == e.target.value
+                )
+            });
+        console.log("New: ",newProduct);
+        setSubProduct(newProduct);
+        
+    }
+
+    const changeQuantity = (id,value) =>{
+        console.log("Dax vao sk");
+        const newQuantity = Number(value.replace(/\D/g,"")) || 0;
+        // const price = e.target.parentNode.dataset.price;
+        // const oldTotal = e.target.dataset.quantity * price;
+        // const newTotal = e.target.value * price;
+
+        setListProduct((prev)=>
+            prev.map((sp)=>
+                sp.id == id ? {...sp,quantity:newQuantity}:sp
+            )
+        )
+    }
+
     useEffect(()=>{
         if (productsl.name =="") return;
-        const orderContainer = document.querySelector(".list-product_slected");
-        let existingItem = orderContainer.querySelector(`[data-name='${productsl.name}']`);
+        // const orderContainer = document.querySelector(".list-product_slected");
+        console.log("List Prodcut: ",listProduct);
+        let existingItem = listProduct?.find((sp)=>sp.id == productsl.id);
 
         if (existingItem) 
             {
-                    let quantitySpan = existingItem.querySelector(".btn span");
-                    quantitySpan.innerText = +quantitySpan.innerText + 1;
+                    // let quantityInput = existingItem.querySelector(".btn input");
+                    // quantityInput.value = quantityInput.value + 1;
                     setListProduct((prev) =>
                         prev.map((sp) =>
-                            sp.id === Number(existingItem.dataset.id)
+                            sp.id == Number(existingItem.id)
                             ?{...sp,quantity:sp.quantity + 1}
                             :sp
                         )
                     )
             } 
         else {
-                    let item = document.createElement("div");
-                    item.className = "order-product_item";
-                    item.setAttribute("data-name", productsl.name);
-                    item.innerHTML = `
-                        <div class="product-item_image"><img src="${productsl.img}" alt="${productsl.name}"/></div>
-                        <div class="product-item_content">
-                            <p>${productsl.name}</p>
-                        </div>
-                        <div class="product-item_btn">
-                                <div class="btn" data-id=${productsl.id} data-price=${productsl.price}>
-                                    <button class="increase">+</button>
-                                    <span>1</span>
-                                    <button class="reduce">-</button>
-                                </div>
-                                <p class="total">${Number(productsl.price).toLocaleString("vi-VN",{style:"currency",currency:"VND"})}</p>
-                        </div>
-                    `;
-                    orderContainer.appendChild(item);
                     
-                    const itemProduct = [{id:productsl.id,name:productsl.name,image:productsl.img
+                    const itemProduct = [{id:productsl.id,name:productsl.name,img:productsl.img
                         ,status:productsl.orderStatus,
                         price:productsl.price,quantity:productsl.quantity}];
 
                     setListProduct((prev)=>[...prev,...itemProduct]);
                     // console.log("list2",listProduct);
 
-                    item.querySelector(".increase").addEventListener("click",increaseClick);
-                    item.querySelector(".reduce").addEventListener("click",reduceClick);
+                    // item.querySelector(".increase").addEventListener("click",increaseClick);
+                    // item.querySelector(".reduce").addEventListener("click",reduceClick);
                     setTotalSelected((prev)=>prev + parseInt(productsl.price));
                     // console.log(productsl.price);
                     // console.log(totalSelected+" "+productsl.price);
@@ -367,36 +315,90 @@ export default function Order(){
         <>
             <div className="order-container">
                 <div className="order-note">
-                    <h2>Lưu ý</h2>
-                </div>
-                <div style={{display : showOrderComplete ? "none" : "flex"}} className="list-product_slected" id="listProduct">
-                </div>
-                <div style={{display : showOrderComplete ? "none" : "flex"}} className="slected-product" id="slProduct">
+                    <h2>Chọn bàn</h2>
                     {
-                        Object.keys(product).map((type)=>(
-                            <div key={type}>
-                                <h3 className="product-item_type">{type}</h3>
-                                    {
-                                        product[type].map((sp)=>(
-                                            <div key={type.productID} className="order-product_item" onClick={()=>hanldeClick(sp)}>
-                                                <div className="product-item_image">
-                                                    <img src={sp.image_path} alt=""/>
-                                                </div>
-                                                <div className="product-item_content">
-                                                    <p>{sp.productName}</p>
-                                                    <p>{Number(sp.price).toLocaleString("vi-VN",{style:"currency",currency:"VND"})}</p>
-                                                </div>
-                                            </div>
-                                        ))
-                                    }
+                        table.map((tbl,key) =>(
+                            <div data-id ={tbl.tableID} onClick={(e)=>hanldeTableClick(e)} key={key} className="table">
+                                <span>Bàn {tbl.tableID}</span>
                             </div>
                         ))
                     }
+                </div>
+                <div className="list-product_slected" id="listProduct">
+                    {
+                        listProduct.map((sp)=>(
+                            <div className="order-product_item">
+                                <div className="product-item_image"><img src={sp.img} alt={sp.name}/></div>
+                                <div className="product-item_content">
+                                    <p>{sp.name}</p>
+                                </div>
+                                <div className="product-item_btn">
+                                        <div className="btn" data-id={sp.id} data-price={sp.price}>
+                                            <button className="reduce" onClick={(e)=>reduceClick(e,sp.id)}>-</button>    
+                                            <input type="text" value = {sp.quantity} onChange={(e)=>changeQuantity(sp.id,e.target.value)}/>
+                                            <button className="increase" onClick={()=>increaseClick(sp.id)}>+</button>
+                                        </div>
+                                        <p className="total">{Number(sp.quantity*sp.price).toLocaleString("vi-VN",{style:"currency",currency:"VND"})}</p>
+                                </div>
+                            </div>
+                        ))
+                    }
+                </div>
+                <div className="slected-product" id="slProduct">
+                    <input type="text" placeholder="Nhập tên sản phẩm" onKeyDown={(e)=>findProduct(e)}/>
+                    <select name="productType" id="productType" onChange={(e)=>filterByType(e)}>    
+                        <option value="All">All</option>
+                        <option value="Coffee">Coffee</option>
+                        <option value="Tea">Tea</option>
+                        <option value="Fruit Tea">Fruit Tea</option>
+                        <option value="Fruit Puree">Fruit Puree</option>
+                        <option value="Cake">Cake</option>
+                    </select>
+                    <div id="Product">
+                        {
+                            subProduct.length > 0 ?
+
+                            subProduct.map((sp)=>(
+                            
+                                <div key={sp.productID} className="order-product_item" onClick={()=>hanldeClick(sp)}>
+                                    <div className="product-item_image">
+                                        <img src={sp.image_path} alt=""/>
+                                    </div>
+                                    <div className="product-item_content">
+                                        <p>{sp.productName}</p>
+                                        <p>{Number(sp.price).toLocaleString("vi-VN",{style:"currency",currency:"VND"})}</p>
+                                    </div>
+                                </div>
+                            
+                        ))
+
+                        :
+
+                            Object.keys(product).map((type)=>(
+                                <div key={type}>
+                                    <h3 className="product-item_type">{type}</h3>
+                                        {
+                                            product[type].map((sp)=>(
+                                                <div key={type.productID} className="order-product_item" onClick={()=>hanldeClick(sp)}>
+                                                    <div className="product-item_image">
+                                                        <img src={sp.image_path} alt=""/>
+                                                    </div>
+                                                    <div className="product-item_content">
+                                                        <p>{sp.productName}</p>
+                                                        <p>{Number(sp.price).toLocaleString("vi-VN",{style:"currency",currency:"VND"})}</p>
+                                                    </div>
+                                                </div>
+                                            ))
+                                        }
+                                </div>
+                            ))
+                        }
+                    </div>
 
                 </div>
-                <div style={{display : showOrderComplete ? "flex" : "none"}} className="order-complete">
-                </div>
-                <div style={{display : showOrderComplete ? "none" : role !="" || data != "" ? "none" : "grid"}} id="order-delivery" className="order-total">
+                {/* <div style={{display : showOrderComplete ? "flex" : "none"}} className="order-complete">
+                </div> */}
+                {/* <div style={{display : showOrderComplete ? "none" : role !="" || data != "" ? "none" : "grid"}} id="order-delivery" className="order-total">
                     <div className="note">
                         <label htmlFor="note">
                             Ghi chú
@@ -414,8 +416,8 @@ export default function Order(){
                                 Order
                         </button>
                     </div>
-                </div>
-                <div style={{display : showOrderComplete ? "none" : role !="" || data == 1 ? "grid" : "none"}} id="order-total" className="order-total">
+                </div> */}
+                <div id="order-total" className="order-total">
 
                     <div className="note">
                         <label htmlFor="note">
@@ -425,18 +427,18 @@ export default function Order(){
                     </div>
                     <div className="order-total_content">
                         <h3 id="total">Tổng tiền:</h3>
-                        <label htmlFor="table">Chọn bàn:</label>
-                        <select name="table" id="table" value={tableSelected} onChange={(e)=>{setTableSelected(e.target.value)}}>
+                        {/* <label htmlFor="table">Chọn bàn:</label> */}
+                        {/* <select name="table" id="table" value={tableSelected} onChange={(e)=>{setTableSelected(e.target.value)}}>
                             {
                                 table.map((tbl, key) => (
                                     <option key={key} value={tbl.tableID}>{tbl.tableID}</option>
                                 ))
                             }
-                        </select>
+                        </select> */}
                         <button id="order" onClick={orderClick}>Order</button>
                     </div>
                 </div>
-                <div style={{display : showOrderComplete ? "grid" : "none"}} id="order-complete" className="order-total">
+                {/* <div style={{display : showOrderComplete ? "grid" : "none"}} id="order-complete" className="order-total">
 
                     <div className="note">
                         <label htmlFor="note">
@@ -451,10 +453,10 @@ export default function Order(){
                         <button id="order" onClick={orderClick}>New Order</button>
                         <button id="pay" onClick={()=> navigate("/Payment")}>Thanh toán</button>
                     </div>
-                </div>
+                </div> */}
 
             </div>
-            <div className="phone-menu">
+            {/* <div className="phone-menu">
                 <div className="slected-product">
                     {
                         Object.keys(product).map((type)=>(
@@ -477,8 +479,8 @@ export default function Order(){
                         ))
                     }
                 </div>
-            </div>
-            <div className="order-delivery" onClick={()=>{
+            </div> */}
+            {/* <div className="order-delivery" onClick={()=>{
                 document.body.style.overflow = "auto";
                 document.querySelector(".order-delivery").style.display = "none";
             }}>
@@ -496,8 +498,8 @@ export default function Order(){
                                 document.querySelector(".order-delivery").style.display = "none";
                             }}>Xác nhận</button>
                         </div>
-                    </div>
-            <button onClick={handleOpenMenu} className="open-menu">{"<"}</button>
+            </div> */}
+            {/* <button onClick={handleOpenMenu} className="open-menu">{"<"}</button> */}
         </>
     )
 }

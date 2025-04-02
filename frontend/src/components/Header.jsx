@@ -94,13 +94,13 @@ function Header() {
         const handleNewOrder = (snapshot) =>{
           const orderId = snapshot.key;
           console.log("cos don hang");
-          // console.log("lastOrderID: ",lastOrderId + "orderID: ",orderId);
+          console.log("lastOrderID: ",lastOrderId + "orderID: ",orderId);
           // setLastOrderId(orderId);
           if (!lastOrderId || Number(orderId) > Number(lastOrderId)) {
             console.log("Đơn hàng mới");
             console.log(notifications);
             setNotifications((prev) => prev+1);
-            localStorage.setItem("lastOrderId", orderId);
+            localStorage.setItem("lastOrderId",orderId);
             // console.log("order id:",orderId);
             setLastOrderId(orderId);
             // console.log(lastOrderId);
@@ -178,6 +178,9 @@ function Header() {
                         <Link to="/Menu/Cake">Bánh ngọt</Link>
                     </div>
               </li>
+              <li id="Order">
+                <Link to="/Order">Đặt hàng</Link>
+              </li>
               <li id="Manager" className={`${styles.dropdown} ${styles.menu2}`} ref={(el) => menuRef.current[2] = el}>
                     <Link to="/Manager/ProductManager" className={styles["dropdown-btn"]} >Quản lý</Link>
                     <div className={styles["dropdown-content"]}>
@@ -185,18 +188,19 @@ function Header() {
                         <Link ref={userRef} to="/Manager/Users">Quản lý nhân viên</Link>
                         <Link ref={orderRef} to="/Manager/Order">Quản lý đơn hàng</Link>
                         <Link ref={IngredinetRef} to="/Manager/Ingredient">Quản lý Nguyên liệu</Link>
-                        <Link ref={stIngredientRef} to="/Manager/Statistical-Ingredient">Thống kê nguyên liệu</Link>
-                        <Link ref={statisticalRef} to="/Manager/Statistical">Thống kê</Link>
                         {/* <Link to="#">Trà trái cây</Link>
                         <Link to="#">Trái cây xay</Link>
                         <Link to="#">Bánh ngọt</Link> */}
                     </div>
               </li>
-              <li id="Order" className={`${styles.dropdown} ${styles.menu2}`} ref={(el) => menuRef.current[3] = el}>
-                <Link to="/Order">Đặt hàng</Link>
-                <div className={styles["dropdown-content"]}>
-                        <Link to="/Order">Đặt Hàng</Link>
-                        <Link to="/Order/Order-Tracking">Tra cứu đơn hàng</Link>
+              <li id="Manager" className={`${styles.dropdown} ${styles.menu2}`} ref={(el) => menuRef.current[2] = el}>
+                    <Link to="/Manager/ProductManager" className={styles["dropdown-btn"]} >Báo cáo</Link>
+                    <div className={styles["dropdown-content"]}>
+                        <Link ref={stIngredientRef} to="/Manager/Statistical-Ingredient">Thống kê nguyên liệu</Link>
+                        <Link ref={statisticalRef} to="/Manager/Statistical">Thống kê doanh thu</Link>
+                        {/* <Link to="#">Trà trái cây</Link>
+                        <Link to="#">Trái cây xay</Link>
+                        <Link to="#">Bánh ngọt</Link> */}
                     </div>
               </li>
               {/* <Link ref={(el) => menuRef.current[4] = el} to="TuyenDung.html">Tuyển dụng</Link> */}

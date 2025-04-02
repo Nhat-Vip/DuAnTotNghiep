@@ -135,10 +135,10 @@ export default function ProductDetail(){
                             <button data-price="10000" data-topping="Kem Phô Mai Macchiaato">Kem Phô Mai Macchiato + 10.000 đ</button>
                         </div>
                         <p className={styles.total}>Tổng: 39.000 đ</p>
-                        <button className={styles["order-btn"]} onClick={()=>{
+                        {/* <button className={styles["order-btn"]} onClick={()=>{
                             document.body.style.overflow = "hidden";
                             document.querySelector(".order-delivery").style.display = "flex";
-                        }}>Đặt giao tận nơi</button>
+                        }}>Đặt giao tận nơi</button> */}
                     </div>
                 </div>
             </div>

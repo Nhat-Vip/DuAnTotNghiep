@@ -323,12 +323,13 @@ footer {
     /* width: 30%; */
     flex: 1 1 30%;
     padding: 5px;
+    /* font-family: monospace; */
     margin-top: 1rem;
 }
 
-.content :global(h5) {
-    padding-bottom: 1rem;
-    font-size: 14px;
+.content :global(h3) {
+    padding: 2rem 0;
+    font-size: 2.3rem;
     font-weight: bold;
     font-family: monospace;
     color: #e6d2d2;
@@ -336,7 +337,8 @@ footer {
 
 .content :global(p),
 .content :global(span) {
-    font-size: 12px;
+    font-size: 1.5rem;
+    font-weight: bold;
     margin-bottom: 5rem;
     color: #e6d2d2;
 }
@@ -345,6 +347,33 @@ footer {
     border-top: solid 1px black;
     padding-top: 2rem;
     width: 100%;
+}
+
+
+
+.content li{
+    font-size: 1.5rem;
+    font-weight: bold;
+    /* padding: 10px; */
+    color: #d9c3c3;
+    padding: 5px;
+}
+
+.content:nth-child(2){
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    & ol{
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+    }
+}
+
+.content:nth-child(3) img{
+    width: 80%;
+    object-fit: cover;
 }
 
 @media (max-width: 767px) {
@@ -368,6 +397,9 @@ footer {
 
     .product-item.product-item.large {
         grid-column: span 2;
+    }
+    .dropdown:hover .dropdown-content {
+        display: block;
     }
 
 }

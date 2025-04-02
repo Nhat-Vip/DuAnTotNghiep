@@ -5,29 +5,33 @@ export default function Footer(){
     <footer>
         <div className={styles["footer-container"]}>
             <div className={styles.content}>
-                <h5>Giới thiệu</h5>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur harum debitis et nisi sed hic,
-                    impedit est possimus voluptates in obcaecati beatae! Eum ipsum deleniti illum cupiditate blanditiis
-                    laudantium possimus?</p>
+                <img width={300} src="./Images/logo-removebg-preview.png" alt="" />
+                <h3>VỀ CHÚNG TÔI</h3>
+                <p>CAT CAFE LUÔN HƯỚNG TỚI NHỮNG ĐIỀU TỐT NHẤT CHO KHÁCH HÀNG</p>
             </div>
             <div className={styles.content}>
-                <h5>Giới thiệu</h5>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur harum debitis et nisi sed hic,
-                    impedit est possimus voluptates in obcaecati beatae! Eum ipsum deleniti illum cupiditate blanditiis
-                    laudantium possimus?</p>
+                <h3>LIÊN HỆ</h3>
+                <ol>
+                    <li>Email:ABC@gmail.com</li>
+                    <li>Địa Chỉ: đường ABC , thành phố Biên hòa ,tỉnh Đồng Nai </li>
+                    <li>Số điện thoại:098765436</li>
+                    
+                </ol>
+                <h3>HỖ TRỢ VÀ CHÍNH SÁCH</h3>
+                <ol>
+                    <li>– Quy chế hoạt động và Chính sách bảo mật.</li>
+                    <li>– Chính sách vận chuyển.</li>
+                    <li>– Chính sách thanh toán.</li>
+                </ol>
             </div>
             <div className={styles.content}>
-                <h5>SDT:00000000000</h5>
-                <span>Địa chỉ</span>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur harum debitis et nisi sed hic,
-                    impedit est possimus voluptates in obcaecati beatae! Eum ipsum deleniti illum cupiditate blanditiis
-                    laudantium possimus?</p>
+                <img src="./Images/poster-removebg-preview.png" alt="" />
             </div>
         </div>
         <div className={`${styles.content} ${styles.bottom}`}>
-            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Suscipit mollitia molestiae reiciendis,
-                    aut, possimus in dolorum optio, harum placeat aspernatur vel accusantium natus minima officia ipsum
-                    modi! Fugit, nam commodi!</p>
+            <p>Công ty cổ phần thương mại nhóm 1
+                nằm tại phổ thông cao đẳng FPT Đồng Nai 
+            </p>
         </div>
     </footer>
     );

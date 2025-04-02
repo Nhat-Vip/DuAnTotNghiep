@@ -26,7 +26,7 @@ $database = $factory->createDatabase();
 function GetAll()
 {
     global $conn;
-    $sql = "SELECT * from orders where orderStatus != 'Hoàn thành' and orderStatus != 'Đã hủy'";
+    $sql = "SELECT * from orders where orderStatus != 'Đã thanh toán' and orderStatus != 'Đã hủy'";
 
     $order = [];
 
