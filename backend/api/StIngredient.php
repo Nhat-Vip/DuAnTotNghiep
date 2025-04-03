@@ -60,9 +60,7 @@ function GetAll(){
 function Insert(){
     global $conn,$ingredientId,$userID,$quantity,$note,$name;
     check();
-    if(!isset($note) || empty($note)){
-        $note = 'Empty';
-    }
+    $note = empty($note) ? "Trống" : "'". $note ."'";
     $sql = "INSERT into statistical_ingredient(ingredientId,userID,quantity,ingredientName,note)
             Values('$ingredientId','$userID','$quantity','$name','$note')";
     $sql2 = "UPDATE ingredient

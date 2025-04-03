@@ -67,7 +67,7 @@ export default function OrderDetail(){
                     <form method="post" encType="multipart/form-data">
                         <input value={"Bàn: "+subOrder.tableID} style={{"--i":"47%"}} type="text" placeholder="Số bàn" disabled/>
                         <input name="price" value={total} style={{"--i":"47%"}} 
-                        type="text" placeholder="Tổng" onChange={(e)=>setTotal(e.target.value)}/>
+                        type="text" placeholder="Tổng" onChange={(e)=>setTotal(e.target.value.replace(/[^\d.]/,""))}/>
                         <input name="productName" value={subOrder.OrderName} style={{"--i":"47%"}} type="text" placeholder="Tên sản phẩm" disabled/>
 
 

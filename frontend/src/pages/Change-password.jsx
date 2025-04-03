@@ -2,16 +2,16 @@ import React,{useState} from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function ChangePassword(){
-    const [oldPwd,setOldPwd] = useState(null);
-    const [newPwd,setNewPwd] = useState(null);
-    const [confirmPwd,setConfirmPwd] = useState(null);
+    const [oldPwd,setOldPwd] = useState("");
+    const [newPwd,setNewPwd] = useState("");
+    const [confirmPwd,setConfirmPwd] = useState("");
     const [showPassword,setShowPassword] = useState(false);
     const navigate = useNavigate();
 
 
     const changePassword = async(e) =>{
         e.preventDefault();
-        if(oldPwd == ""||newPwd == "" || confirmPwd == ""){
+        if(oldPwd == ""|| newPwd == "" || confirmPwd == ""){
             alert("Không đc để trống dữ liệu");
             return;
         }

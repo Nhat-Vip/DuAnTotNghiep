@@ -118,6 +118,10 @@ function InsertOrder()
 
         foreach ($data["products"] as $item) {
 
+            if($item["quantity"] == 0){
+                continue;
+            }
+
             $quantity = $item["quantity"] ?? 1;
             $subTotal = (int)$quantity * (int)$item["price"];
             $productID = $item["productID"]??$item["id"];

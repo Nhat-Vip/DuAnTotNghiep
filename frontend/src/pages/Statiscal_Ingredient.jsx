@@ -139,9 +139,9 @@ export default function Statistical_Ingredient(){
                     onChange={(e) => setSubStIngredient({...subStIngredient, name: e.target.value})} disabled/>
 
                     <input value={subStIngredient.quantity} style={{"--i":"45%"}} type="text" placeholder="Số lượng" 
-                    onChange={(e)=>setSubStIngredient({...subStIngredient,quantity: e.target.value})}/>
+                    onChange={(e)=>setSubStIngredient({...subStIngredient,quantity: e.target.value.replace(/[^\d.]/,"")})}/>
 
-                    <input name="note" value={subStIngredient.note ??""} style={{"--i":"100%"}} type="text" placeholder="Ghi chú" 
+                    <input name="note" value={subStIngredient.note} style={{"--i":"100%"}} type="text" placeholder="Ghi chú" 
                     onChange={(e) => setSubStIngredient({...subStIngredient, note: e.target.value})} />
 
                     {/* <input type="submit" onClick={(event)=>{handleStIngredientClick("insert",event)}} value="Thêm" style={{"--i":"45%"}}/> */}

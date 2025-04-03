@@ -77,6 +77,11 @@ export default function Order(){
         // }
 
 
+        if(listProduct.length<=0){
+            alert("Vui lòng chọn sản phẩm");
+            return;
+        }
+
         console.log("ListProduct",listProduct);
         const orderInformation = {
             orderName : "",

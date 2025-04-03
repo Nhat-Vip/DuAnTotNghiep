@@ -92,10 +92,10 @@ export default function Ingredient(){
                     onChange={(e) => setSubIngredient({...subIngredient, name: e.target.value})} />
 
                     <input name="price" value={subIngredient.price} style={{"--i":"45%"}} type="text" placeholder="Giá nhập" 
-                    onChange={(e) => setSubIngredient({...subIngredient, price: e.target.value})} />
+                    onChange={(e) => setSubIngredient({...subIngredient, price: e.target.value.replace(/[^\d.]/,"")})} />
 
                     <input value={subIngredient.quantity} style={{"--i":"45%"}} type="text" placeholder="Số lượng" 
-                    onChange={(e)=>setSubIngredient({...subIngredient,quantity: e.target.value})}/>
+                    onChange={(e)=>setSubIngredient({...subIngredient,quantity: e.target.value.replace(/[^\d.]/,"")})}/>
                     <input type="submit" onClick={(event)=>{handleIngredientClick("insert",event)}} value="Thêm" style={{"--i":"45%"}}/>
                     <input type="button" value="Sửa" style={{"--i":"45%"}} onClick={(event)=>{handleIngredientClick("update",event)}}/>
                 </form>

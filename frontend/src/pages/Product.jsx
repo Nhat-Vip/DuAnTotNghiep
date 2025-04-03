@@ -127,7 +127,7 @@ export default function Product(){
                     onChange={(e) => setSelectedProduct({...selectedProduct, name: e.target.value})} />
 
                     <input name="price" value={selectedProduct.price} style={{"--i":"47%"}} type="text" placeholder="Giá bán" 
-                    onChange={(e) => setSelectedProduct({...selectedProduct, price: e.target.value})} />
+                    onChange={(e) =>{setSelectedProduct({...selectedProduct, price: e.target.value.replace(/[^\d.]/g,"")})}} />
 
                     {/* <input value={selectedProduct.quantity} style={{"--i":"30%"}} type="text" placeholder="Số lượng"/> */}
                     <select value={selectedProduct.type} name="type" id="type" style={{"--i":"47%"}} 

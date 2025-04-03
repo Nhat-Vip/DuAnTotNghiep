@@ -41,7 +41,8 @@ export default function Statistical(){
                 if(dateTime == "day"){
                     const today = new Date().toISOString().split("T")[0];
                     const data  = statistical.filter((sta)=>{
-                        const orderDate = new Date(sta.orderDate).toISOString().split("T")[0];
+                        console.log(sta.orderDate);
+                        const orderDate = new Date(sta.orderDate)?.toISOString().split("T")[0];
                         console.log("Today",today + "orderDate",orderDate);
                         return orderDate == today
                     })

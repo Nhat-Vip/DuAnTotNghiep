@@ -197,10 +197,10 @@ function Header() {
                     </div>
               </li>
               <li id="Statistical" className={`${styles.dropdown} ${styles.menu2}`} ref={(el) => menuRef.current[2] = el}>
-                    <Link to="/Manager/ProductManager" className={styles["dropdown-btn"]} >Báo cáo</Link>
+                    <Link to="/Statistical/Statistical-Ingredient" className={styles["dropdown-btn"]} >Báo cáo</Link>
                     <div className={styles["dropdown-content"]}>
-                        <Link ref={stIngredientRef} to="/Manager/Statistical-Ingredient">Thống kê nguyên liệu</Link>
-                        <Link ref={statisticalRef} to="/Manager/Statistical">Thống kê doanh thu</Link>
+                        <Link ref={stIngredientRef} to="/Statistical/Statistical-Ingredient">Thống kê nguyên liệu</Link>
+                        <Link ref={statisticalRef} to="/Statistical/Revenue-statistics">Thống kê doanh thu</Link>
                         {/* <Link to="#">Trà trái cây</Link>
                         <Link to="#">Trái cây xay</Link>
                         <Link to="#">Bánh ngọt</Link> */}

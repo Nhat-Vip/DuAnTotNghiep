@@ -33,13 +33,13 @@ function App() {
           <Route path="/Menu/:Type" element={<MainLayout><Menu /> </MainLayout>}/>
           <Route path="/collections/all" element={<MainLayout> <Header /> </MainLayout>}/>
           <Route path="/Manager/ProductManager" element={<MainLayout> <Product /> </MainLayout>}/>
-          <Route path="/Manager/Statistical" element={<MainLayout> <Statistical /> </MainLayout>}/>
+          <Route path="/Statistical/Revenue-statistics" element={<MainLayout> <Statistical /> </MainLayout>}/>
           <Route path="/Order" element={<MainLayout> <Order /> </MainLayout>}/>
           <Route path="/Manager/Users" element={<MainLayout> <User /> </MainLayout>}/>
           <Route path="/Product/:id" element={<MainLayout> <ProductDetail /> </MainLayout>}/>
           <Route path="/User-profile" element={<MainLayout> <UserProfile /> </MainLayout>}/>
           <Route path="/Manager/Ingredient" element={<MainLayout> <Ingredient /> </MainLayout>}/>
-          <Route path="/Manager/Statistical-Ingredient" element={<MainLayout> <Statistical_Ingredient /> </MainLayout>}/>
+          <Route path="/Statistical/Statistical-Ingredient" element={<MainLayout> <Statistical_Ingredient /> </MainLayout>}/>
           <Route path="/Manager/Order" element={<MainLayout> <Order_Manager /> </MainLayout>}/>
           <Route path="/Change-password" element={<MainLayout> <ChangePassword /> </MainLayout>}/>
           {/* <Route path="/Order/Manager" element={<MainLayout> <Admin /> </MainLayout>}/> */}
