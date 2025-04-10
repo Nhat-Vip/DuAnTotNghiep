@@ -284,14 +284,21 @@ header {
 }
 
 .product-item {
+    cursor: pointer;
     padding: 2rem;
 }
 
 .product-item_text {
     padding: 10px;
+    font-family: "SF Pro Text", sans-serif;
     font-weight: bold;
-    text-align: center;
+    text-align: left;
     font-size: 1.5rem;
+
+    & p:last-of-type{
+        padding-top: 5px;
+        font-weight: normal;
+    }
 }
 
 .product-item :global(img) {

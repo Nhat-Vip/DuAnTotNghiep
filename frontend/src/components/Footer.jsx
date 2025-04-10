@@ -25,7 +25,7 @@ export default function Footer(){
                 </ol>
             </div>
             <div className={styles.content}>
-                <img src="./Images/poster-removebg-preview.png" alt="" />
+                <img src="/Images/poster-removebg-preview.png" alt="Poster" />
             </div>
         </div>
         <div className={`${styles.content} ${styles.bottom}`}>

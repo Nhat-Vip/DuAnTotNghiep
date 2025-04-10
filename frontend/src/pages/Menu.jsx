@@ -80,6 +80,7 @@ export default function Menu(){
     return(
         <div className="container">
             <aside className="menu-slidebar">
+            {/* <img src="/Images/background_menu.png" alt="" /> */}
                 <ul className="menu-slidebar-content">
                     <li id="all" data-name = "all" onClick={menuItemClick}>Tất cả</li>
                     <li id="Coffee" data-name = "Coffee" onClick={menuItemClick}>Coffee</li>

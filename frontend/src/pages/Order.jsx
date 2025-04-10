@@ -105,7 +105,7 @@ export default function Order(){
         const result = JSON.parse(text);
         alert(result.message);
         if(result.status == "Success"){
-            document.querySelector(".list-product_slected").replaceChildren();
+            // document.querySelector(".list-product_slected").replaceChildren();
             // setOrderID(Number(result.orderID));
             // localStorage.setItem("orderID",result.orderID);
             // setOrderComplete(true);
@@ -180,24 +180,27 @@ export default function Order(){
 
         // const price = event.target.parentNode.dataset.price;
 
-        if(Number(quantity.value) <= 1)
-        {
-           const item = event.target.parentNode.parentNode.parentNode;
-           const itemParent = document.querySelector(".list-product_slected");
+        // if(Number(quantity.value) <= 1)
+        // {
+        //    const item = event.target.parentNode.parentNode.parentNode;
+        //    const itemParent = document.querySelector(".list-product_slected");
 
-           itemParent.removeChild(item);
-           setListProduct((prev) =>prev.filter((sp) => sp.id !== id));
-        }
+        //    itemParent.removeChild(item);
+        //    setListProduct((prev) =>prev.filter((sp) => sp.id !== id));
+        //    return;
+        // }
 
         // console.log(`${totalSelected} - ${price} = ${Number(totalSelected)- Number(price)}`)
         // setTotalSelected((prev) => prev - Number(price));
 
-        setListProduct((prev) =>
-            prev.map((sp) =>
-                sp.id === id
-                ?{...sp,quantity:sp.quantity - 1}
-                :sp
-            )
+        setListProduct((prev) =>{
+               const updatedList = prev.map((sp) =>
+                sp.id === id ? { ...sp, quantity: sp.quantity - 1 } : sp
+                ).filter(sp => sp.quantity > 0); // Xóa những sản phẩm có quantity = 0
+                
+                return updatedList;
+            }
+            
         )
         
     }
@@ -321,8 +324,12 @@ export default function Order(){
             <div className="order-container">
                 <div className="order-note">
                     <h2>Chọn bàn</h2>
+                    
+                        <div data-id = '0' onClick={(e)=>hanldeTableClick(e)} className="table active">
+                            <span>Mang về</span>
+                        </div>
                     {
-                        table.map((tbl,key) =>(
+                        table.slice(1).map((tbl,key) =>(
                             <div data-id ={tbl.tableID} onClick={(e)=>hanldeTableClick(e)} key={key} className="table">
                                 <span>Bàn {tbl.tableID}</span>
                             </div>

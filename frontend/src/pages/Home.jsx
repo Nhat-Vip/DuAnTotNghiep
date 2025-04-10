@@ -1,4 +1,5 @@
 import React,{useEffect,useRef,useState} from "react";
+import { useNavigate } from "react-router-dom";
 import styles from "../index.module.css";
 import Header from "../components/Header";
 
@@ -9,12 +10,17 @@ function Home() {
   const prevRef = useRef(null);
   const nextRef = useRef(null);
 
-  // const [product,setProduct] = useState([]);
+  const [product,setProduct] = useState([]);
   const [active, setActive] = useState(0);
 
-  // useEffect(()=>{
+  const navigate = useNavigate();
 
-  // })
+  useEffect(()=>{
+    fetch("/api/product.php?action=all")
+    .then((response)=>response.json())
+    .then((data)=>setProduct(data))
+    .catch((err)=>console.error("Lỗi: ",err));
+  },[])
 
   useEffect(()=>{
     if (!listRef.current || itemsRef.current.length === 0) return;
@@ -59,6 +65,10 @@ function Home() {
       prev?.removeEventListener("click", handlePrev);
     };
   }, []);
+  const productClick = (sp) =>{
+
+        navigate(`/product/${sp.productName}`,{state:{sp}});
+    }
   return (
 
     <>
@@ -96,19 +106,21 @@ function Home() {
         <div className={`${styles["product-item"]} ${styles.large}`}>
           <img src="/Images/image.png" alt=""/>
         </div>
-
+        {/* {console.log(product)} */}
         {
-
+          product.slice(0,10).map((sp,key)=>(
+            <div key={key} className={styles["product-item"]} onClick={()=>productClick(sp)}>
+              <img src={sp.image_path} alt={sp.productName}/>
+              <div className={styles["product-item_text"]}>
+                  <p>{sp.productName}</p>
+                  <p>{Number(sp.price).toLocaleString("vi-VN",{style:"currency",currency:"VND"})}</p>
+              </div>
+            </div>
+          ))
         }
 
-        <div className={styles["product-item"]}>
-          <img src="/Images/hong tra sua tran chau.webp" alt=""/>
-          {/* <div className={styles["product-item_text"]}>
-              <p>ABC</p>
-              <p>10.000đ</p>
-          </div> */}
-        </div>
-        <div className={styles["product-item"]}>
+        
+        {/* <div className={styles["product-item"]}>
           <img src="/Images/bac xiu lac sua yen mach.webp" alt=""/>
         </div>
         <div className={styles["product-item"]}>
@@ -116,7 +128,7 @@ function Home() {
         </div>
         <div className={styles["product-item"]}>
           <img src="/Images/mochi kem tra sua tran chau.webp" alt=""/>
-        </div>
+        </div> */}
       </div>
     </>
   );

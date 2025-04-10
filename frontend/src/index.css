@@ -255,7 +255,11 @@ tbody .item:hover{
 }
 
 .menu-slidebar {
+  width: 100%;
   display: flex;
+  background-image: url("/Images/background_menu.png");
+  background-repeat: no-repeat;
+  /* background-size: ; */
   justify-content: flex-end;
   padding-right: 3rem;
   float: right;
@@ -264,6 +268,12 @@ tbody .item:hover{
   /* margin-top: 15px; */
   height: 100vh;
   margin: 2rem;
+  & img{
+    width: 40%;
+    height: 40%;
+    /* object-fit:cover; */
+    float: left;
+  }
 }
 
 .menu-slidebar-content {
@@ -294,6 +304,7 @@ tbody .item:hover{
 }
 
 .List-product {
+  background-size: cover;
   border-left: solid 5px rgb(238, 222, 222);
   padding: 0 15px;
   width: 100%;
