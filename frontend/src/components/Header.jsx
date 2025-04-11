@@ -13,6 +13,7 @@ function Header() {
   const productRef = useRef(null);
   const userRef = useRef(null);
   const orderRef = useRef(null);
+  const orderManagerRef = useRef(null);
   const IngredinetRef = useRef(null);
   const stIngredientRef = useRef(null);
   const statisticalRef = useRef(null);
@@ -95,7 +96,7 @@ function Header() {
 
   // Nhận thông báo khi có đơn hàng hàng
   useEffect(()=>{
-        const orderRef = ref(database, "orders");
+        const orderRefs = ref(database, "orders");
         const handleNewOrder = (snapshot) =>{
           const orderId = snapshot.key;
           console.log("cos don hang");
@@ -112,7 +113,7 @@ function Header() {
             // ShowNotificationNumber();
           }
         }
-        const unsubscribe = onChildAdded(orderRef, handleNewOrder);
+        const unsubscribe = onChildAdded(orderRefs, handleNewOrder);
         return()=>unsubscribe();
     },[]);// eslint-disable-line react-hooks/exhaustive-deps
 
@@ -191,7 +192,7 @@ function Header() {
                     <div className={styles["dropdown-content"]}>
                         <Link ref={productRef} to="/Manager/ProductManager">Quản lý sản phẩm</Link>
                         <Link ref={userRef} to="/Manager/Users">Quản lý nhân viên</Link>
-                        <Link ref={orderRef} to="/Manager/Order">Quản lý đơn hàng</Link>
+                        <Link ref={orderManagerRef} to="/Manager/Order">Quản lý đơn hàng</Link>
                         <Link ref={IngredinetRef} to="/Manager/Ingredient">Quản lý Nguyên liệu</Link>
                         {/* <Link to="#">Trà trái cây</Link>
                         <Link to="#">Trái cây xay</Link>
