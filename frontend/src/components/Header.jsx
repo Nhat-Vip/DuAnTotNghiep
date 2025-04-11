@@ -66,11 +66,13 @@ function Header() {
     if(userRole == "" || userRole == null){
       manager.style.display = "none";
       notification.style.display = "none";
+      orderRef.current.style.display = "none";
       document.getElementById("Statistical").style.display = "none";
       setRole(userRole);
     }
     else if (userRole == 0){
       manager.style.display = "block";
+      orderRef.current.style.display = "block";
       productRef.current.style.display = "none";
       userRef.current.style.display ="none";
       IngredinetRef.current.style.display = "none";
@@ -181,7 +183,7 @@ function Header() {
                         <Link to="/Menu/Cake">Bánh ngọt</Link>
                     </div>
               </li>
-              <li id="Order">
+              <li id="Order" ref={orderRef}>
                 <Link to="/Order">Đặt hàng</Link>
               </li>
               <li id="Manager" className={`${styles.dropdown} ${styles.menu2}`} ref={(el) => menuRef.current[2] = el}>
