@@ -1,4 +1,6 @@
 import React,{useEffect,useState,useRef} from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Statistical_Ingredient(){
     const [Ingredient,setIngredient] = useState([]);
@@ -49,7 +51,7 @@ export default function Statistical_Ingredient(){
         console.log(type);
 
         if(subStIngredient.name == ""){
-            alert("Vui lòng chọn nguyên liệu cần cập nhật");
+            toast.warning("Vui lòng chọn nguyên liệu cần cập nhật",{position:"top-center"});
         }
 
         const formData = new FormData();
@@ -75,7 +77,7 @@ export default function Statistical_Ingredient(){
                 const result = JSON.parse(text);
                 console.log("Kết quả từ server: ",result);
                 if(result.status == "Success"){
-                    alert(result.message);
+                    toast.success(result.message,{position:"top-center"});
                     setSubStIngredient({
                         id : "",
                         name: "",
@@ -88,7 +90,7 @@ export default function Statistical_Ingredient(){
                     Load_StIngredient();
                 }
                 else{
-                    alert(result.message);
+                    toast.error(result.message,{position:"top-center"});
                 }
             }
             catch(err){
@@ -97,7 +99,7 @@ export default function Statistical_Ingredient(){
         }
         catch(err){
             console.error("Có lỗi xảy ra: ",err);
-            alert("Có lỗi xảy ra khi gửi form");
+            toast.error("Có lỗi xảy ra khi gửi form",{position:"top-center"});
         }
 
     }
@@ -132,6 +134,7 @@ export default function Statistical_Ingredient(){
 
     return(
         <div className="form-product-container">
+            <ToastContainer />
             <div className="form-product">
                 <h2>Thống kê nguyên liệu</h2>
                 <form method="post" ref={formRef} action={`/api/product.php?action=insert&id=${subStIngredient.id}`} encType="multipart/form-data">

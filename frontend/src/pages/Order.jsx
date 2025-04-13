@@ -1,16 +1,18 @@
 import React,{useState,useEffect} from "react";
 import { Link ,useNavigate,useLocation} from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 // import { useNavigate } from "react-router-dom";
 
 export default function Order(){
     const [product,setProduct] = useState([]);
     const [subProduct,setSubProduct] = useState([]);
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
-    const location = useLocation();
-    const params = new URLSearchParams(location.search);
-    const data = params.get("qr") ?? "";
+    // const location = useLocation();
+    // const params = new URLSearchParams(location.search);
+    // const data = params.get("qr") ?? "";
 
 
     const [listProduct,setListProduct] = useState([]);
@@ -20,9 +22,9 @@ export default function Order(){
     // const [showOrderComplete,setShowOrderComplete] = useState(orderComplete);
     // const [orderID,setOrderID] = useState(0);
     // const [order,setOrder] = useState([]);
-    const role = localStorage.getItem("role");
+    // const role = localStorage.getItem("role");
     // const navigate = useNavigate();
-    const [openMenu,setOpenMenu] = useState(false);
+    // const [openMenu,setOpenMenu] = useState(false);
     const [table,setTable] = useState([]);
     const [tableSelected,setTableSelected] = useState(0);
 
@@ -103,8 +105,9 @@ export default function Order(){
         console.log("Response từ server:", text);
 
         const result = JSON.parse(text);
-        alert(result.message);
+        
         if(result.status == "Success"){
+            toast.success(result.message,{position:"top-center"});
             // document.querySelector(".list-product_slected").replaceChildren();
             // setOrderID(Number(result.orderID));
             // localStorage.setItem("orderID",result.orderID);
@@ -116,6 +119,9 @@ export default function Order(){
             // findOrder(result.orderID);
             console.log(JSON.parse(localStorage.getItem("listProduct")));
             setListProduct([]);
+        }
+        else{
+            toast.error(result.message,{position:"top-center"});
         }
         // navigate("/Order/Manager");
 
@@ -321,6 +327,7 @@ export default function Order(){
 
     return(
         <>
+        <ToastContainer />
             <div className="order-container">
                 <div className="order-note">
                     <h2>Chọn bàn</h2>

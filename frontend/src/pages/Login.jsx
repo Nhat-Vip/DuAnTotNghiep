@@ -1,6 +1,8 @@
 import React,{useState} from "react";
 import { useNavigate } from "react-router-dom";
-import "../login.css"
+import "../login.css";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 
 export default function Login(){
@@ -28,13 +30,14 @@ export default function Login(){
             navigate("/home");
         }
         else {
-            alert(result.message); // Báo lỗi nếu sai tài khoản
+            toast.error(result.message,{position:"top-center"}); // Báo lỗi nếu sai tài khoản
         }
     }
 
     return (
         <>
             <div className="wrapper-container">
+                <ToastContainer />
                 <a href="/home">X</a>
                 <div className="wrapper">
                     <div className="login_box">

@@ -1,4 +1,6 @@
 import React ,{useEffect,useState,useRef} from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 // import { data } from "react-router-dom";
 // import "../index.css"
 
@@ -64,7 +66,7 @@ export default function Product(){
     const handleFormClick = async(type,event) =>{
         event.preventDefault();
             if (!selectedProduct.id&&type=="update") {
-                alert("Chưa chọn sản phẩm để cập nhật!");
+                toast.error("Chưa chọn sản phẩm để cập nhật!",{position:"top-center"});
                 return;
             }
         console.log("abc",selectedProduct);
@@ -99,12 +101,12 @@ export default function Product(){
 
 
                 if (result.status === "success") {
-                    alert(result.message);
+                    toast.success(result.message,{position:"top-center"});
                     formRef.current.reset(); // Reset form sau khi gửi thành công
                     setSelectedFile(null); // Xóa ảnh đã chọn
                     loadProduct();
                 } else {
-                    alert("Có lỗi xảy ra! " + result.message);
+                    toast.error("Có lỗi xảy ra! " + result.message,{position:"top-center"});
                 }
             }
             catch(err){
@@ -113,13 +115,14 @@ export default function Product(){
         }
         catch (error) {
             console.error("Lỗi khi gửi form:",error);
-            alert("Gửi form thất bại!");
+            toast.error("Gửi form thất bại!",{position:"top-center"});
         }   
     }
 
 
     return(
         <div className="form-product-container">
+            <ToastContainer />
             <div className="form-product">
                 <h2>Sản phẩm</h2>
                 <form method="post" ref={formRef} action={`/api/product.php?action=insert&id=${selectedProduct.id}`} encType="multipart/form-data">

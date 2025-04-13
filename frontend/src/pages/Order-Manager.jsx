@@ -3,6 +3,8 @@ import {useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { faArrowUpWideShort } from "@fortawesome/free-solid-svg-icons";
 import { faArrowUpShortWide } from "@fortawesome/free-solid-svg-icons";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Order_Manager(){
     const [order,setOrder] = useState([]);
@@ -76,7 +78,7 @@ export default function Order_Manager(){
         const result = JSON.parse(text2);
         console.log("Kết quả từ server: ",result);
         if(result.status == "Error"){
-           alert("Không tìm thấy đơn hàng");
+           toast.error("Không tìm thấy đơn hàng",{position:"top-center"});
         }
         else{
             setSubOrder(result);
@@ -94,6 +96,7 @@ export default function Order_Manager(){
 
     return(
         <div className="form-product-container">
+            <ToastContainer />
             <h2>Danh sách đơn hàng</h2>
             <div className="Search">
                 <label htmlFor="search">

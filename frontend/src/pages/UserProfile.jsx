@@ -1,5 +1,7 @@
 import React,{useEffect,useState} from "react";
-import { data, Link} from "react-router-dom";
+import {Link} from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function UserProfile(){
 
@@ -38,7 +40,7 @@ export default function UserProfile(){
 
         const result = JSON.parse(text);
         console.log("Kết quả từ server: ",result.message);
-        alert(result.message);
+        result.message == "Success" ? toast.success(result.message,{position:"top-center"}) : toast.error(result.message,{position:"top-center"});
         if(result.status){
             loadProfile();
         }

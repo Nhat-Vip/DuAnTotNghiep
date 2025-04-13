@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation,useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function OrderDetail(){
     const location = useLocation();
@@ -51,10 +53,10 @@ export default function OrderDetail(){
         console.log("Kết quả từ server: ",result);
 
         if(result.status == "Success"){
-            alert(result.message);
+            toast.success(result.message,{position:"top-center"});
         }
         else {
-            alert(result.message);
+            toast.error(result.message,{position:"top-center"});
         }
     }
 
@@ -62,6 +64,7 @@ export default function OrderDetail(){
     return(
         <>
             <div className="form-product-container">
+                <ToastContainer />
                 <div className="form-product">
                     <h2>Chi tiết đơn hàng</h2>
                     <form method="post" encType="multipart/form-data">

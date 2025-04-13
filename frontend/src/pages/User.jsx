@@ -1,4 +1,6 @@
 import React ,{useEffect,useState,useRef} from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 // import "../index.css"
 
 export default function User(){
@@ -44,7 +46,7 @@ export default function User(){
         // Kiểm tra xem có đang xóa chính tk đang đăng nhập không
         console.log(localStorage.getItem("userID")+" "+event.target.parentNode.parentNode.dataset.id);
         if(localStorage.getItem("userID") == event.target.parentNode.parentNode.dataset.id){
-            alert("Không thể tự xóa chính mình");
+            toast.error("Không thể tự xóa chính mình",{position:"top-center"});
             return;
         }
 
@@ -81,7 +83,7 @@ export default function User(){
                 // console.log("Kết quả từ server: ",result);
 
                 if(result.status == "Success"){
-                    alert(result.message);
+                    toast.success(result.message,{position:"top-center"});
                     formRef.current.reset();
                     setSelectedUser({name: "",
                                     email: "",
@@ -92,7 +94,7 @@ export default function User(){
                     loadUser();
                 }
                 else{
-                    alert(result.message);
+                    toast.error(result.message,{position:"top-center"});
                 }
             }
             catch (error) {
@@ -107,6 +109,7 @@ export default function User(){
     }
     return(
         <div className="form-product-container">
+            <ToastContainer />
             <div className="form-product">
                 <h2>User</h2>
                 <form method="post" ref={formRef}>

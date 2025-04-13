@@ -61,7 +61,7 @@ function GetAllOrdDetail()
 
 function FindOrder(){
     global $conn;
-    $orderId = $_GET['id'] ?? "";
+    $orderId = $_GET["id"] == "" ? "" : $_GET["id"];
     if(empty($orderId)){
         echo json_encode("OrderID: $orderId");
         exit();
