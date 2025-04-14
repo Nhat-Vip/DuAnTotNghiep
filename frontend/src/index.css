@@ -932,9 +932,10 @@ a:hover {
   max-width: 80%;
   display: grid;
   grid-template-columns: 70% 30%;
-  grid-template-rows: 80px auto;
-  grid-template-areas: "content information"
-                        "type information";
+  grid-template-rows: 80px auto 50px;
+  grid-template-areas: "type information"
+                        "type information"
+                        "return return";
   margin: 0 auto;
   margin-top: 10%;
   box-shadow: 2px 5px 0 rgba(0, 0, 0, 0.5),2px 8px 0 rgba(0, 0, 0, 0.8),-2px -5px 5px rgba(0, 0, 0, 0.5);
@@ -943,7 +944,9 @@ a:hover {
 
   & a{
     width: 20%;
-    padding-top: 10px;
+    grid-area: return;
+    float: left;
+    padding-top: 20px;
     font-weight: bold;
     font-size: 1.5rem;
     color: rgba(0, 0, 0, 0.996);

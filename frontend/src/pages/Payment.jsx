@@ -56,7 +56,7 @@ export default function Payment(){
     return(
             <div className="payment-container">
                 <ToastContainer />
-                    <h1><FontAwesomeIcon id="icon" icon={faCircleCheck} /> Đặt hàng thành công</h1>
+                    {/* <h1><FontAwesomeIcon id="icon" icon={faCircleCheck} /> Đặt hàng thành công</h1> */}
                     <div className="payment-type">
                         <p>Hướng dẫn thanh toán</p>
                         <div className="payment-type-content">
