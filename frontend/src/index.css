@@ -240,6 +240,9 @@ tbody .item:hover{
 .Statistical tr:nth-child(even) td {
   background-color: #fff;
 }
+.Statistical-table tfoot td{
+  background-color: #fff !important;
+}
 
 
 /* Menu */
@@ -514,6 +517,9 @@ a:hover {
   & select{
     padding: 5px 0;
   }
+}
+.slected-product input::placeholder {
+  padding: 4px;
 }
 /* .open-menu{
   position: absolute;

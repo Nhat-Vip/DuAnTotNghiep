@@ -8,10 +8,10 @@ include_once "../config/database.php";
 function GetProduct(){
     global $conn;
 
-    $sql = "select prd.productName as 'productName',MIN(ord.orderDate) as 'orderDate', prd.price as 'price',SUM(ordt.quantity * prd.price) as 'total', sum(ordt.quantity) as 'quantity' From orders ord join orderdetails ordt
+    $sql = "select prd.productName as 'productName',Min(ord.orderDate) as 'orderDate', prd.price as 'price',SUM(ordt.quantity * prd.price) as 'total', sum(ordt.quantity) as 'quantity' From orders ord join orderdetails ordt
             on ord.orderID = ordt.orderID
             join product prd on prd.productID = ordt.productID
-            where ord.orderStatus = 'Đã thanh toán'
+            where ord.orderStatus = 'Đã thanh toán' and month(ord.orderDate) = month(now())
             group by ordt.productID;";
 
 
@@ -51,7 +51,8 @@ function GetOrder(){
     global $conn;
 
     $sql = "SELECT * FROM orders ord
-            join users us on ord.userID = us.userID;";
+            join users us on ord.userID = us.userID;
+            Where ord.orderStatus = 'Đã thanh toán'";
 
 
     $statistical = [];

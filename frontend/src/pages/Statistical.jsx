@@ -107,6 +107,18 @@ export default function Statistical(){
                         ))
                     }
                 </tbody>
+                <tfoot>
+                    <tr style={{backgroundColor:"white"}}>
+                        <td colSpan="4" style={{ textAlign: "right", fontWeight: "bold", fontSize: "2rem" }}>Tổng:</td>
+                        <td style={{ fontWeight: "bold", fontSize: "1.7rem", color:"red" }}>
+                            {
+                            Number(
+                                subStatistical.reduce((sum, sp) => sum + Number(sp.total), 0)
+                            ).toLocaleString("vi-VN", { style: "currency", currency: "VND" })
+                            }
+                        </td>
+                    </tr>
+                </tfoot>
             </table>
             <table style={{display: statisticalType == "ingredient" ? "table" : "none"}}>
                 <thead>
@@ -126,7 +138,7 @@ export default function Statistical(){
                                 <td>{key}</td>
                                 <td>{sp.userName}</td>
                                 <td>{sp.IngredientName}</td>
-                                <td>{sp.quantity}</td>
+                                <td>{Number(sp.quantity)}</td>
                                 <td>{sp.orderDate}</td>
                                 <td>{sp.note}</td>
                             </tr>

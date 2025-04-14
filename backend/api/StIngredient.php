@@ -15,7 +15,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 }
 
 function check(){
-    global $action, $subUserID, $userID, $quantity,$id,$note;
+    global $action, $subUserID, $userID, $quantity,$id;
 
     if(!isset($quantity)){
         echo json_encode(["status"=>"Error","message"=>"Không đc để trống số lượng"], JSON_UNESCAPED_UNICODE);
@@ -62,7 +62,7 @@ function Insert(){
     check();
     $note = empty($note) ? "Trống" : "'". $note ."'";
     $sql = "INSERT into statistical_ingredient(ingredientId,userID,quantity,ingredientName,note)
-            Values('$ingredientId','$userID','$quantity','$name','$note')";
+            Values('$ingredientId','$userID','$quantity','$name',$note)";
     $sql2 = "UPDATE ingredient
              SET quantity = '$quantity'
              WHERE ingredientId = '$ingredientId'";
@@ -88,9 +88,10 @@ function Insert(){
 function Update(){
     global $conn, $id, $quantity, $note;
     check();
+    $note = empty($note) ? "Trống" : "'" . $note . "'";
     $sql = "UPDATE statistical_ingredient
             SET quantity = '$quantity',
-                note = '$note'
+                note = $note
             Where stIngredientId = '$id'";
     if($conn->query($sql) == true){
         echo json_encode(["status"=>"Success","message"=>"Thành công"], JSON_UNESCAPED_UNICODE);

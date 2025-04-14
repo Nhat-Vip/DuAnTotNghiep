@@ -188,7 +188,7 @@ function Header() {
                 <Link to="/Order">Đặt hàng</Link>
               </li>
               <li id="Manager" className={`${styles.dropdown} ${styles.menu2}`} ref={(el) => menuRef.current[2] = el}>
-                    <Link to="/Manager/ProductManager" className={styles["dropdown-btn"]} >Quản lý</Link>
+                    <Link to="/Manager/Order" className={styles["dropdown-btn"]} >Quản lý</Link>
                     <div className={styles["dropdown-content"]}>
                         <Link ref={productRef} to="/Manager/ProductManager">Quản lý sản phẩm</Link>
                         <Link ref={userRef} to="/Manager/Users">Quản lý nhân viên</Link>
