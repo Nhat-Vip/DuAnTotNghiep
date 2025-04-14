@@ -3,9 +3,10 @@ import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
-
 import { database, ref } from "../components/firebase";
 import { onChildChanged } from "firebase/database";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Payment(){
 
@@ -13,6 +14,7 @@ export default function Payment(){
     const location = useLocation();
     const {total,orderDetails} = location.state;
     console.log(orderDetails);
+    // console.log(`https://qr.sepay.vn/img?acc=0379530805&bank=MB&amount=${total}&des=DH${orderDetails[0].OrderID}&template=compact`);
 
     const [product,setProduct] = useState([]);
     // console.log(listProduct);
@@ -25,18 +27,21 @@ export default function Payment(){
             console.log("snapShot2");
             const data = snapshot.val();
             const id = snapshot.key;
-            const orderID = orderDetails.OrderID;
+            const orderID = orderDetails[0].OrderID;
             // setOrderID(Number(localStorage.getItem("orderID")));
             console.log("Da nhan sk");
             console.log(id + "and" + orderID);
-            if(data && Number(id) == orderID && data.information.status == "success"){
+            if(data && Number(id) == Number(orderID) && data.information.orderStatus == "success"){
                 console.log("OK ROI");
-                alert("Thanh toán thành công");
+                toast.success("Thanh toán thành công",{position:"top-center"});
                 // document.getElementById("status").innerHTML =`Trạng thái: <b style={{color:"red"}}>${data.status}</b>`;
+            }
+            else{
+                toast.error("Lỗi",{position:"top-center"});
             }
         });
         return () => unsubscribe();
-    },[]);
+    },[]);//eslint-disable-line
 
     useEffect(()=>{
             fetch("/api/product.php?action=all")
@@ -50,13 +55,14 @@ export default function Payment(){
 
     return(
             <div className="payment-container">
+                <ToastContainer />
                     <h1><FontAwesomeIcon id="icon" icon={faCircleCheck} /> Đặt hàng thành công</h1>
                     <div className="payment-type">
                         <p>Hướng dẫn thanh toán</p>
                         <div className="payment-type-content">
                             <div className="payment-type_qr">
                                 <p>Cách 1 : Mở app ngân hàng và quét QR</p>
-                                <img src={`https://qr.sepay.vn/img?acc=0379530805&bank=MB&amount=${total}&des=DH${orderDetails.OrderID}&template=compact`} alt="qr-code" width={300} />
+                                <img src={`https://qr.sepay.vn/img?acc=0379530805&bank=MB&amount=${total}&des=DH${orderDetails[0].OrderID}&template=compact`} alt="qr-code" width={300} />
                                 <span>Trạng thái: Chờ thanh toán ....</span>
                             </div>
                             <div className="payment-type_handmade">
@@ -79,7 +85,7 @@ export default function Payment(){
                                                 <td><b>{Number(total).toLocaleString("vi-VN",{style:"currency",currency:"VND"})}</b></td>
                                             </tr>
                                             <tr>
-                                                <td>Nội dung CK: DH{orderDetails.OrderID}</td>
+                                                <td>Nội dung CK: DH{orderDetails[0].OrderID}</td>
                                                 <td><b>Nguyễn Cự Nhật</b></td>
                                             </tr>
                                         </tbody>
