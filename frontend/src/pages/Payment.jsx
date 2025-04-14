@@ -21,11 +21,11 @@ export default function Payment(){
         const orderRef = ref(database,"orders");
         
         const unsubscribe = onChildChanged(orderRef,(snapshot)=>{
-            console.log("OrderID",localStorage.getItem("orderID"));
+            // console.log("OrderID",localStorage.getItem("orderID"));
             console.log("snapShot2");
             const data = snapshot.val();
             const id = snapshot.key;
-            const orderID = localStorage.getItem("orderID");
+            const orderID = orderDetails.OrderID;
             // setOrderID(Number(localStorage.getItem("orderID")));
             console.log("Da nhan sk");
             console.log(id + "and" + orderID);
